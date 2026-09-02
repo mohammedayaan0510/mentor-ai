@@ -1,0 +1,280 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-accent-blue: #3b82f6;
+  --color-accent-teal: #14b8a6;
+  --color-accent-indigo: #6366f1;
+  --color-dark-bg: #09090b;
+  --color-dark-card: #121214;
+  --color-dark-editor: #0d0d0f;
+  --color-dark-border: rgba(255, 255, 255, 0.05);
+}
+
+/* Custom styles and overrides */
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-dark-bg);
+  color: #e4e4e7;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #09090b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #18181b;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #27272a;
+}
+
+/* Custom pulse and glow classes */
+.glow-indigo {
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
+}
+
+.glow-teal {
+  box-shadow: 0 0 20px rgba(20, 184, 166, 0.15);
+}
+
+.glow-blue {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+}
+
+.glow-green {
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.15);
+}
+
+/* Animation utilities */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ==========================================================================
+   LIGHT THEME REFINEMENTS
+   Refines the light mode aesthetics with crisp typography, clean white cards,
+   subtle slate borders, and vibrant Indigo/Teal accent highlights.
+   Leaves dark mode completely untouched.
+   ========================================================================== */
+
+.light-theme {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+body.light-theme,
+html.light-theme body {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+/* Scrollbars in Light Mode */
+.light-theme ::-webkit-scrollbar-track {
+  background: #f1f5f9 !important;
+}
+
+.light-theme ::-webkit-scrollbar-thumb {
+  background: #cbd5e1 !important;
+  border-radius: 4px;
+}
+
+.light-theme ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8 !important;
+}
+
+/* Containers and Cards in Light Mode */
+.light-theme aside,
+.light-theme header,
+.light-theme .bg-\[\#121214\],
+.light-theme .bg-\[\#0d0d0f\],
+.light-theme .bg-zinc-900,
+.light-theme .bg-zinc-900\/50,
+.light-theme .bg-zinc-900\/80,
+.light-theme .bg-zinc-800\/20,
+.light-theme .bg-zinc-800\/30,
+.light-theme .bg-zinc-800\/40,
+.light-theme .bg-zinc-800\/50,
+.light-theme .bg-zinc-800\/80,
+.light-theme .bg-\[\#121214\]\/40,
+.light-theme .bg-\[\#0d0d0f\]\/40,
+.light-theme .bg-\[\#09090b\]\/40,
+.light-theme .bg-\[\#09090b\]\/80 {
+  background-color: #ffffff !important;
+}
+
+/* Outer background in Light Mode */
+.light-theme .bg-\[\#09090b\] {
+  background-color: #f8fafc !important;
+}
+
+/* Borders in Light Mode */
+.light-theme .border-white\/5,
+.light-theme .border-white\/10,
+.light-theme .border-white\/20,
+.light-theme .border-zinc-800,
+.light-theme .border-zinc-800\/50,
+.light-theme .border-zinc-800\/20,
+.light-theme .border-zinc-700 {
+  border-color: #e2e8f0 !important;
+}
+
+/* Card Box Shadows in Light Mode */
+.light-theme .border-white\/5,
+.light-theme .border-white\/10,
+.light-theme .rounded-2xl,
+.light-theme .rounded-3xl,
+.light-theme .rounded-xl {
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
+}
+
+/* Text Overrides in Light Mode */
+.light-theme .text-zinc-100,
+.light-theme .text-zinc-200,
+.light-theme .text-zinc-300,
+.light-theme .text-zinc-255 {
+  color: #0f172a !important;
+}
+
+.light-theme .text-zinc-400 {
+  color: #475569 !important;
+}
+
+.light-theme .text-zinc-500 {
+  color: #64748b !important;
+}
+
+/* Ensure white text inside colored buttons/badges stays high-contrast white */
+.light-theme .bg-indigo-600,
+.light-theme .bg-indigo-600 *,
+.light-theme .bg-indigo-500,
+.light-theme .bg-indigo-500 *,
+.light-theme .bg-teal-600,
+.light-theme .bg-teal-600 *,
+.light-theme .bg-rose-600,
+.light-theme .bg-rose-600 *,
+.light-theme .bg-emerald-600,
+.light-theme .bg-emerald-600 * {
+  color: #ffffff !important;
+}
+
+/* Form Inputs, Textareas, Selects in Light Mode */
+.light-theme input:not([type="checkbox"]):not([type="radio"]),
+.light-theme textarea,
+.light-theme select {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+.light-theme input::placeholder,
+.light-theme textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+.light-theme input:focus,
+.light-theme textarea:focus,
+.light-theme select:focus {
+  border-color: #6366f1 !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15) !important;
+}
+
+/* Hover States in Light Mode */
+.light-theme .hover\:bg-white\/5:hover,
+.light-theme .hover\:bg-zinc-800:hover,
+.light-theme .hover\:bg-zinc-800\/20:hover,
+.light-theme .hover\:bg-zinc-800\/50:hover,
+.light-theme .hover\:bg-zinc-900:hover {
+  background-color: #f1f5f9 !important;
+}
+
+.light-theme .hover\:text-zinc-200:hover,
+.light-theme .hover\:text-zinc-300:hover,
+.light-theme .hover\:text-white:hover {
+  color: #0f172a !important;
+}
+
+/* Sidebar Active Items & Accent Color Text in Light Mode */
+.light-theme .bg-\[\#0d0d0f\] {
+  background-color: #f1f5f9 !important;
+}
+
+.light-theme .text-indigo-400 {
+  color: #4338ca !important;
+}
+
+.light-theme .text-teal-400 {
+  color: #0d9488 !important;
+}
+
+.light-theme .text-purple-400 {
+  color: #7e22ce !important;
+}
+
+.light-theme .text-amber-400 {
+  color: #b45309 !important;
+}
+
+.light-theme .text-rose-400 {
+  color: #e11d48 !important;
+}
+
+.light-theme .text-blue-400 {
+  color: #1d4ed8 !important;
+}
+
+.light-theme .text-cyan-400 {
+  color: #0e7490 !important;
+}
+
+.light-theme .text-emerald-400 {
+  color: #047857 !important;
+}
+
+/* Mobile Bottom Navigation in Light Mode */
+.light-theme #mobile-bottom-nav {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-top-color: #e2e8f0 !important;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Toast Notification in Light Mode */
+.light-theme #toast-notification {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Code area in Light Mode */
+.light-theme .bg-[#0d0d0f] {
+  background-color: #f1f5f9 !important;
+}
+
+/* Glow effects in Light Mode */
+.light-theme .glow-indigo {
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.2) !important;
+}
+
+.light-theme .glow-teal {
+  box-shadow: 0 0 20px rgba(20, 184, 166, 0.2) !important;
+}
+

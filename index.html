@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mentor.AI — Intelligent Coding Mentor & Career Prep</title>
+    <meta name="description" content="AI-powered coding mentor and learning platform with interactive code execution, practice problems, mock interviews, and learning roadmaps." />
+    <meta property="og:title" content="Mentor.AI — Intelligent Coding Mentor & Career Prep" />
+    <meta property="og:description" content="AI-powered coding mentor and learning platform with interactive code execution, practice problems, mock interviews, and learning roadmaps." />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#09090b" />
+    <script>
+      // Suppress benign disabled HMR / websocket reconnection noise in dev preview container
+      window.addEventListener('unhandledrejection', function(event) {
+        var reason = event.reason;
+        var msg = (typeof reason === 'string' ? reason : (reason && reason.message) || String(reason || '')).toLowerCase();
+        if (msg.includes('websocket') || msg.includes('[vite]')) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      });
+      window.addEventListener('error', function(event) {
+        var msg = (event.message || '').toLowerCase();
+        if (msg.includes('websocket') || msg.includes('[vite]')) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

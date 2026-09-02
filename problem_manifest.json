@@ -1,0 +1,1273 @@
+[
+  {
+    "id": "prob-1",
+    "title": "Two Sum",
+    "fn": "twoSum",
+    "tests": [
+      {
+        "input": "[2,7,11,15], 9",
+        "expected": "[0,1]"
+      },
+      {
+        "input": "[3,2,4], 6",
+        "expected": "[1,2]"
+      },
+      {
+        "input": "[3,3], 6",
+        "expected": "[0,1]"
+      }
+    ],
+    "sampleIn": "nums = [2,7,11,15], target = 9",
+    "sampleOut": "[0,1]"
+  },
+  {
+    "id": "prob-2",
+    "title": "Reverse a Linked List",
+    "fn": "reverseList",
+    "tests": [
+      {
+        "input": "[1,2,3,4,5]",
+        "expected": "[5,4,3,2,1]"
+      },
+      {
+        "input": "[1,2]",
+        "expected": "[2,1]"
+      },
+      {
+        "input": "[]",
+        "expected": "[]"
+      }
+    ],
+    "sampleIn": "head = [1,2,3,4,5]",
+    "sampleOut": "[5,4,3,2,1]"
+  },
+  {
+    "id": "prob-3",
+    "title": "Valid Parentheses",
+    "fn": "isValid",
+    "tests": [
+      {
+        "input": "\"()\"",
+        "expected": "true"
+      },
+      {
+        "input": "\"()[]{}\"",
+        "expected": "true"
+      },
+      {
+        "input": "\"(]\"",
+        "expected": "false"
+      }
+    ],
+    "sampleIn": "s = \"()[]{}\"",
+    "sampleOut": "true"
+  },
+  {
+    "id": "prob-4",
+    "title": "Binary Tree Inorder Traversal",
+    "fn": "inorderTraversal",
+    "tests": [
+      {
+        "input": "[1,null,2,3]",
+        "expected": "[1,3,2]"
+      },
+      {
+        "input": "[]",
+        "expected": "[]"
+      },
+      {
+        "input": "[1]",
+        "expected": "[1]"
+      }
+    ],
+    "sampleIn": "root = [1,null,2,3]",
+    "sampleOut": "[1,3,2]"
+  },
+  {
+    "id": "prob-5",
+    "title": "Fibonacci Number (Dynamic Programming)",
+    "fn": "fib",
+    "tests": [
+      {
+        "input": "2",
+        "expected": "1"
+      },
+      {
+        "input": "3",
+        "expected": "2"
+      },
+      {
+        "input": "4",
+        "expected": "3"
+      }
+    ],
+    "sampleIn": "n = 4",
+    "sampleOut": "3"
+  },
+  {
+    "id": "prob-6",
+    "title": "Longest Substring Without Repeating Characters",
+    "fn": "lengthOfLongestSubstring",
+    "tests": [
+      {
+        "input": "\"abcabcbb\"",
+        "expected": "3"
+      },
+      {
+        "input": "\"bbbbb\"",
+        "expected": "1"
+      },
+      {
+        "input": "\"pwwkew\"",
+        "expected": "3"
+      }
+    ],
+    "sampleIn": "s = \"abcabcbb\"",
+    "sampleOut": "3"
+  },
+  {
+    "id": "prob-7",
+    "title": "Binary Search",
+    "fn": "binarySearch",
+    "tests": [
+      {
+        "input": "[-1,0,3,5,9,12], 9",
+        "expected": "4"
+      },
+      {
+        "input": "[-1,0,3,5,9,12], 2",
+        "expected": "-1"
+      },
+      {
+        "input": "[5], 5",
+        "expected": "0"
+      }
+    ],
+    "sampleIn": "nums = [-1,0,3,5,9,12], target = 9",
+    "sampleOut": "4"
+  },
+  {
+    "id": "prob-8",
+    "title": "Maximum Subarray (Kadane's)",
+    "fn": "maxSubArray",
+    "tests": [
+      {
+        "input": "[-2,1,-3,4,-1,2,1,-5,4]",
+        "expected": "6"
+      },
+      {
+        "input": "[1]",
+        "expected": "1"
+      },
+      {
+        "input": "[5,4,-1,7,8]",
+        "expected": "23"
+      }
+    ],
+    "sampleIn": "nums = [-2,1,-3,4,-1,2,1,-5,4]",
+    "sampleOut": "6"
+  },
+  {
+    "id": "prob-9",
+    "title": "Valid Palindrome",
+    "fn": "isPalindrome",
+    "tests": [
+      {
+        "input": "\"A man, a plan, a canal: Panama\"",
+        "expected": "true"
+      },
+      {
+        "input": "\"race a car\"",
+        "expected": "false"
+      },
+      {
+        "input": "\" \"",
+        "expected": "true"
+      }
+    ],
+    "sampleIn": "s = \"A man, a plan, a canal: Panama\"",
+    "sampleOut": "true"
+  },
+  {
+    "id": "prob-10",
+    "title": "Rotate Array to the Right",
+    "fn": "rotateArray",
+    "tests": [
+      {
+        "input": "[1,2,3,4,5,6,7], 3",
+        "expected": "[5,6,7,1,2,3,4]"
+      },
+      {
+        "input": "[-1,-100,3,99], 2",
+        "expected": "[3,99,-1,-100]"
+      },
+      {
+        "input": "[1,2], 3",
+        "expected": "[2,1]"
+      },
+      {
+        "input": "[1], 0",
+        "expected": "[1]"
+      }
+    ],
+    "sampleIn": "nums = [1,2,3,4,5,6,7], k = 3",
+    "sampleOut": "[5,6,7,1,2,3,4]"
+  },
+  {
+    "id": "prob-11",
+    "title": "Contains Duplicate Elements",
+    "fn": "containsDuplicate",
+    "tests": [
+      {
+        "input": "[1,2,3,1]",
+        "expected": "true"
+      },
+      {
+        "input": "[1,2,3,4]",
+        "expected": "false"
+      },
+      {
+        "input": "[1,1,1,3,3,4,3,2,4,2]",
+        "expected": "true"
+      },
+      {
+        "input": "[42]",
+        "expected": "false"
+      }
+    ],
+    "sampleIn": "nums = [1,2,3,1]",
+    "sampleOut": "true"
+  },
+  {
+    "id": "prob-12",
+    "title": "Move Zeroes to End",
+    "fn": "moveZeroes",
+    "tests": [
+      {
+        "input": "[0,1,0,3,12]",
+        "expected": "[1,3,12,0,0]"
+      },
+      {
+        "input": "[0]",
+        "expected": "[0]"
+      },
+      {
+        "input": "[4,5,6]",
+        "expected": "[4,5,6]"
+      },
+      {
+        "input": "[0,0,1]",
+        "expected": "[1,0,0]"
+      }
+    ],
+    "sampleIn": "nums = [0,1,0,3,12]",
+    "sampleOut": "[1,3,12,0,0]"
+  },
+  {
+    "id": "prob-13",
+    "title": "Product of Array Except Self",
+    "fn": "productExceptSelf",
+    "tests": [
+      {
+        "input": "[1,2,3,4]",
+        "expected": "[24,12,8,6]"
+      },
+      {
+        "input": "[-1,1,0,-3,3]",
+        "expected": "[0,0,9,0,0]"
+      },
+      {
+        "input": "[2,3]",
+        "expected": "[3,2]"
+      }
+    ],
+    "sampleIn": "nums = [1,2,3,4]",
+    "sampleOut": "[24,12,8,6]"
+  },
+  {
+    "id": "prob-14",
+    "title": "Majority Element Frequency",
+    "fn": "majorityElement",
+    "tests": [
+      {
+        "input": "[3,2,3]",
+        "expected": "3"
+      },
+      {
+        "input": "[2,2,1,1,1,2,2]",
+        "expected": "2"
+      },
+      {
+        "input": "[6]",
+        "expected": "6"
+      }
+    ],
+    "sampleIn": "nums = [3,2,3]",
+    "sampleOut": "3"
+  },
+  {
+    "id": "prob-15",
+    "title": "Merge Sorted Intervals",
+    "fn": "mergeIntervals",
+    "tests": [
+      {
+        "input": "[[1,3],[2,6],[8,10],[15,18]]",
+        "expected": "[[1,6],[8,10],[15,18]]"
+      },
+      {
+        "input": "[[1,4],[4,5]]",
+        "expected": "[[1,5]]"
+      },
+      {
+        "input": "[[1,4],[0,4]]",
+        "expected": "[[0,4]]"
+      },
+      {
+        "input": "[[6,8]]",
+        "expected": "[[6,8]]"
+      }
+    ],
+    "sampleIn": "intervals = [[1,3],[2,6],[8,10],[15,18]]",
+    "sampleOut": "[[1,6],[8,10],[15,18]]"
+  },
+  {
+    "id": "prob-16",
+    "title": "Find Missing Number in Sequence",
+    "fn": "findMissingNumber",
+    "tests": [
+      {
+        "input": "[3,0,1]",
+        "expected": "2"
+      },
+      {
+        "input": "[0,1]",
+        "expected": "2"
+      },
+      {
+        "input": "[9,6,4,2,3,5,7,0,1]",
+        "expected": "8"
+      },
+      {
+        "input": "[0]",
+        "expected": "1"
+      }
+    ],
+    "sampleIn": "nums = [3,0,1]",
+    "sampleOut": "2"
+  },
+  {
+    "id": "prob-17",
+    "title": "First Missing Positive Integer",
+    "fn": "firstMissingPositive",
+    "tests": [
+      {
+        "input": "[1,2,0]",
+        "expected": "3"
+      },
+      {
+        "input": "[3,4,-1,1]",
+        "expected": "2"
+      },
+      {
+        "input": "[7,8,9,11,12]",
+        "expected": "1"
+      },
+      {
+        "input": "[1]",
+        "expected": "2"
+      }
+    ],
+    "sampleIn": "nums = [1,2,0]",
+    "sampleOut": "3"
+  },
+  {
+    "id": "prob-18",
+    "title": "Valid Anagram Check",
+    "fn": "isAnagram",
+    "tests": [
+      {
+        "input": "\"anagram\", \"nagaram\"",
+        "expected": "true"
+      },
+      {
+        "input": "\"rat\", \"car\"",
+        "expected": "false"
+      },
+      {
+        "input": "\"a\", \"a\"",
+        "expected": "true"
+      },
+      {
+        "input": "\"ab\", \"a\"",
+        "expected": "false"
+      }
+    ],
+    "sampleIn": "s = \"anagram\", t = \"nagaram\"",
+    "sampleOut": "true"
+  },
+  {
+    "id": "prob-19",
+    "title": "Reverse Words in a Sentence",
+    "fn": "reverseWords",
+    "tests": [
+      {
+        "input": "\"the sky is blue\"",
+        "expected": "\"blue is sky the\""
+      },
+      {
+        "input": "\"  hello world  \"",
+        "expected": "\"world hello\""
+      },
+      {
+        "input": "\"a good   example\"",
+        "expected": "\"example good a\""
+      }
+    ],
+    "sampleIn": "s = \"the sky is blue\"",
+    "sampleOut": "\"blue is sky the\""
+  },
+  {
+    "id": "prob-20",
+    "title": "Longest Common Prefix",
+    "fn": "longestCommonPrefix",
+    "tests": [
+      {
+        "input": "[\"flower\",\"flow\",\"flight\"]",
+        "expected": "\"fl\""
+      },
+      {
+        "input": "[\"dog\",\"racecar\",\"car\"]",
+        "expected": "\"\""
+      },
+      {
+        "input": "[\"interspecies\",\"interstellar\",\"interstate\"]",
+        "expected": "\"inters\""
+      },
+      {
+        "input": "[\"single\"]",
+        "expected": "\"single\""
+      }
+    ],
+    "sampleIn": "strs = [\"flower\",\"flow\",\"flight\"]",
+    "sampleOut": "\"fl\""
+  },
+  {
+    "id": "prob-21",
+    "title": "Group Anagrams by Pattern",
+    "fn": "groupAnagrams",
+    "tests": [
+      {
+        "input": "[\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]",
+        "expected": "[[\"eat\",\"tea\",\"ate\"],[\"tan\",\"nat\"],[\"bat\"]]"
+      },
+      {
+        "input": "[\"\"]",
+        "expected": "[[\"\"]]"
+      },
+      {
+        "input": "[\"a\"]",
+        "expected": "[[\"a\"]]"
+      }
+    ],
+    "sampleIn": "strs = [\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]",
+    "sampleOut": "[[\"eat\",\"tea\",\"ate\"],[\"tan\",\"nat\"],[\"bat\"]]"
+  },
+  {
+    "id": "prob-22",
+    "title": "String Compression with Counts",
+    "fn": "compressString",
+    "tests": [
+      {
+        "input": "\"aabcccccaaa\"",
+        "expected": "\"a2b1c5a3\""
+      },
+      {
+        "input": "\"abcdef\"",
+        "expected": "\"abcdef\""
+      },
+      {
+        "input": "\"aaaaaa\"",
+        "expected": "\"a6\""
+      },
+      {
+        "input": "\"\"",
+        "expected": "\"\""
+      }
+    ],
+    "sampleIn": "s = \"aabcccccaaa\"",
+    "sampleOut": "\"a2b1c5a3\""
+  },
+  {
+    "id": "prob-23",
+    "title": "Longest Palindromic Substring",
+    "fn": "longestPalindrome",
+    "tests": [
+      {
+        "input": "\"babad\"",
+        "expected": "\"bab\""
+      },
+      {
+        "input": "\"cbbd\"",
+        "expected": "\"bb\""
+      },
+      {
+        "input": "\"a\"",
+        "expected": "\"a\""
+      },
+      {
+        "input": "\"racecar\"",
+        "expected": "\"racecar\""
+      }
+    ],
+    "sampleIn": "s = \"babad\"",
+    "sampleOut": "\"bab\""
+  },
+  {
+    "id": "prob-24",
+    "title": "Subarray Sum Equals K",
+    "fn": "subarraySum",
+    "tests": [
+      {
+        "input": "[1,1,1], 2",
+        "expected": "2"
+      },
+      {
+        "input": "[1,2,3], 3",
+        "expected": "2"
+      },
+      {
+        "input": "[1,-1,0], 0",
+        "expected": "3"
+      }
+    ],
+    "sampleIn": "nums = [1,1,1], k = 2",
+    "sampleOut": "2"
+  },
+  {
+    "id": "prob-25",
+    "title": "First Unique Character Index",
+    "fn": "firstUniqChar",
+    "tests": [
+      {
+        "input": "\"leetcode\"",
+        "expected": "0"
+      },
+      {
+        "input": "\"loveleetcode\"",
+        "expected": "2"
+      },
+      {
+        "input": "\"aabb\"",
+        "expected": "-1"
+      }
+    ],
+    "sampleIn": "s = \"leetcode\"",
+    "sampleOut": "0"
+  },
+  {
+    "id": "prob-26",
+    "title": "Intersection of Two Arrays",
+    "fn": "intersection",
+    "tests": [
+      {
+        "input": "[1,2,2,1], [2,2]",
+        "expected": "[2]"
+      },
+      {
+        "input": "[4,9,5], [9,4,9,8,4]",
+        "expected": "[4,9]"
+      },
+      {
+        "input": "[1,2,3], [4,5,6]",
+        "expected": "[]"
+      }
+    ],
+    "sampleIn": "nums1 = [1,2,2,1], nums2 = [2,2]",
+    "sampleOut": "[2]"
+  },
+  {
+    "id": "prob-27",
+    "title": "Longest Consecutive Sequence",
+    "fn": "longestConsecutive",
+    "tests": [
+      {
+        "input": "[100,4,200,1,3,2]",
+        "expected": "4"
+      },
+      {
+        "input": "[0,3,7,2,5,8,4,6,0,1]",
+        "expected": "9"
+      },
+      {
+        "input": "[]",
+        "expected": "0"
+      },
+      {
+        "input": "[10]",
+        "expected": "1"
+      }
+    ],
+    "sampleIn": "nums = [100,4,200,1,3,2]",
+    "sampleOut": "4"
+  },
+  {
+    "id": "prob-28",
+    "title": "LRU Cache Simulation",
+    "fn": "simulateLRUCache",
+    "tests": [
+      {
+        "input": "2, [[\"PUT\",1,1],[\"PUT\",2,2],[\"GET\",1],[\"PUT\",3,3],[\"GET\",2],[\"PUT\",4,4],[\"GET\",1],[\"GET\",3],[\"GET\",4]]",
+        "expected": "[1,-1,-1,3,4]"
+      },
+      {
+        "input": "1, [[\"PUT\",2,1],[\"GET\",2],[\"PUT\",3,2],[\"GET\",2],[\"GET\",3]]",
+        "expected": "[1,-1,2]"
+      }
+    ],
+    "sampleIn": "capacity = 2, operations = [[\"PUT\",1,1],[\"PUT\",2,2],[\"GET\",1],[\"PUT\",3,3],[\"GET\",2],[\"PUT\",4,4],[\"GET\",1],[\"GET\",3],[\"GET\",4]]",
+    "sampleOut": "[1,-1,-1,3,4]"
+  },
+  {
+    "id": "prob-29",
+    "title": "Two Sum II - Sorted Input",
+    "fn": "twoSumSorted",
+    "tests": [
+      {
+        "input": "[2,7,11,15], 9",
+        "expected": "[1,2]"
+      },
+      {
+        "input": "[2,3,4], 6",
+        "expected": "[1,3]"
+      },
+      {
+        "input": "[-1,0], -1",
+        "expected": "[1,2]"
+      }
+    ],
+    "sampleIn": "numbers = [2,7,11,15], target = 9",
+    "sampleOut": "[1,2]"
+  },
+  {
+    "id": "prob-30",
+    "title": "Container With Most Water",
+    "fn": "maxArea",
+    "tests": [
+      {
+        "input": "[1,8,6,2,5,4,8,3,7]",
+        "expected": "49"
+      },
+      {
+        "input": "[1,1]",
+        "expected": "1"
+      },
+      {
+        "input": "[4,3,2,1,4]",
+        "expected": "16"
+      }
+    ],
+    "sampleIn": "height = [1,8,6,2,5,4,8,3,7]",
+    "sampleOut": "49"
+  },
+  {
+    "id": "prob-31",
+    "title": "Remove Duplicates from Sorted Array",
+    "fn": "removeDuplicates",
+    "tests": [
+      {
+        "input": "[1,1,2]",
+        "expected": "2"
+      },
+      {
+        "input": "[0,0,1,1,1,2,2,3,3,4]",
+        "expected": "5"
+      },
+      {
+        "input": "[1]",
+        "expected": "1"
+      }
+    ],
+    "sampleIn": "nums = [1,1,2]",
+    "sampleOut": "2"
+  },
+  {
+    "id": "prob-32",
+    "title": "3Sum to Zero",
+    "fn": "threeSum",
+    "tests": [
+      {
+        "input": "[-1,0,1,2,-1,-4]",
+        "expected": "[[-1,-1,2],[-1,0,1]]"
+      },
+      {
+        "input": "[0,1,1]",
+        "expected": "[]"
+      },
+      {
+        "input": "[0,0,0]",
+        "expected": "[[0,0,0]]"
+      }
+    ],
+    "sampleIn": "nums = [-1,0,1,2,-1,-4]",
+    "sampleOut": "[[-1,-1,2],[-1,0,1]]"
+  },
+  {
+    "id": "prob-33",
+    "title": "Minimum Size Subarray Sum",
+    "fn": "minSubArrayLen",
+    "tests": [
+      {
+        "input": "7, [2,3,1,2,4,3]",
+        "expected": "2"
+      },
+      {
+        "input": "4, [1,4,4]",
+        "expected": "1"
+      },
+      {
+        "input": "11, [1,1,1,1,1,1,1,1]",
+        "expected": "0"
+      }
+    ],
+    "sampleIn": "target = 7, nums = [2,3,1,2,4,3]",
+    "sampleOut": "2"
+  },
+  {
+    "id": "prob-34",
+    "title": "Max Consecutive Ones with K Flips",
+    "fn": "longestOnes",
+    "tests": [
+      {
+        "input": "[1,1,1,0,0,0,1,1,1,1,0], 2",
+        "expected": "6"
+      },
+      {
+        "input": "[0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,1], 3",
+        "expected": "10"
+      },
+      {
+        "input": "[1,1,1]",
+        "expected": "3"
+      }
+    ],
+    "sampleIn": "nums = [1,1,1,0,0,0,1,1,1,1,0], k = 2",
+    "sampleOut": "6"
+  },
+  {
+    "id": "prob-35",
+    "title": "Maximum Average Subarray I",
+    "fn": "findMaxAverage",
+    "tests": [
+      {
+        "input": "[1,12,-5,-6,50,3], 4",
+        "expected": "12.75"
+      },
+      {
+        "input": "[5], 1",
+        "expected": "5"
+      },
+      {
+        "input": "[0,4,0,3,2], 1",
+        "expected": "4"
+      }
+    ],
+    "sampleIn": "nums = [1,12,-5,-6,50,3], k = 4",
+    "sampleOut": "12.75"
+  },
+  {
+    "id": "prob-36",
+    "title": "Sliding Window Maximum",
+    "fn": "maxSlidingWindow",
+    "tests": [
+      {
+        "input": "[1,3,-1,-3,5,3,6,7], 3",
+        "expected": "[3,3,5,5,6,7]"
+      },
+      {
+        "input": "[1], 1",
+        "expected": "[1]"
+      },
+      {
+        "input": "[9,11], 2",
+        "expected": "[11]"
+      }
+    ],
+    "sampleIn": "nums = [1,3,-1,-3,5,3,6,7], k = 3",
+    "sampleOut": "[3,3,5,5,6,7]"
+  },
+  {
+    "id": "prob-37",
+    "title": "Min Stack Design",
+    "fn": "simulateMinStack",
+    "tests": [
+      {
+        "input": "[[\"PUSH\",-2],[\"PUSH\",0],[\"PUSH\",-3],[\"GET_MIN\"],[\"POP\"],[\"TOP\"],[\"GET_MIN\"]]",
+        "expected": "[-3,0,-2]"
+      },
+      {
+        "input": "[[\"PUSH\",5],[\"TOP\"],[\"GET_MIN\"]]",
+        "expected": "[5,5]"
+      }
+    ],
+    "sampleIn": "operations = [[\"PUSH\",-2],[\"PUSH\",0],[\"PUSH\",-3],[\"GET_MIN\"],[\"POP\"],[\"TOP\"],[\"GET_MIN\"]]",
+    "sampleOut": "[-3,0,-2]"
+  },
+  {
+    "id": "prob-38",
+    "title": "Evaluate Reverse Polish Notation",
+    "fn": "evalRPN",
+    "tests": [
+      {
+        "input": "[\"2\",\"1\",\"+\",\"3\",\"*\"]",
+        "expected": "9"
+      },
+      {
+        "input": "[\"4\",\"13\",\"5\",\"/\",\"+\"]",
+        "expected": "6"
+      },
+      {
+        "input": "[\"10\",\"6\",\"9\",\"3\",\"+\",\"-11\",\"*\",\"/\",\"*\",\"17\",\"+\",\"5\",\"+\"]",
+        "expected": "22"
+      }
+    ],
+    "sampleIn": "tokens = [\"2\",\"1\",\"+\",\"3\",\"*\"]",
+    "sampleOut": "9"
+  },
+  {
+    "id": "prob-39",
+    "title": "Daily Temperatures Wait Time",
+    "fn": "dailyTemperatures",
+    "tests": [
+      {
+        "input": "[73,74,75,71,69,72,76,73]",
+        "expected": "[1,1,4,2,1,1,0,0]"
+      },
+      {
+        "input": "[30,40,50,60]",
+        "expected": "[1,1,1,0]"
+      },
+      {
+        "input": "[30,60,90]",
+        "expected": "[1,1,0]"
+      }
+    ],
+    "sampleIn": "temperatures = [73,74,75,71,69,72,76,73]",
+    "sampleOut": "[1,1,4,2,1,1,0,0]"
+  },
+  {
+    "id": "prob-40",
+    "title": "Implement Queue using Stacks",
+    "fn": "simulateQueueWithStacks",
+    "tests": [
+      {
+        "input": "[[\"PUSH\",1],[\"PUSH\",2],[\"PEEK\"],[\"POP\"],[\"EMPTY\"]]",
+        "expected": "[1,1,false]"
+      },
+      {
+        "input": "[[\"PUSH\",5],[\"EMPTY\"],[\"POP\"]]",
+        "expected": "[false,5]"
+      }
+    ],
+    "sampleIn": "operations = [[\"PUSH\",1],[\"PUSH\",2],[\"PEEK\"],[\"POP\"],[\"EMPTY\"]]",
+    "sampleOut": "[1,1,false]"
+  },
+  {
+    "id": "prob-41",
+    "title": "Merge Two Sorted Linked Lists",
+    "fn": "mergeTwoLists",
+    "tests": [
+      {
+        "input": "[1,2,4], [1,3,4]",
+        "expected": "[1,1,2,3,4,4]"
+      },
+      {
+        "input": "[], []",
+        "expected": "[]"
+      },
+      {
+        "input": "[], [0]",
+        "expected": "[0]"
+      }
+    ],
+    "sampleIn": "list1 = [1,2,4], list2 = [1,3,4]",
+    "sampleOut": "[1,1,2,3,4,4]"
+  },
+  {
+    "id": "prob-42",
+    "title": "Remove Nth Node From End of List",
+    "fn": "removeNthFromEnd",
+    "tests": [
+      {
+        "input": "[1,2,3,4,5], 2",
+        "expected": "[1,2,3,5]"
+      },
+      {
+        "input": "[1], 1",
+        "expected": "[]"
+      },
+      {
+        "input": "[1,2], 1",
+        "expected": "[1]"
+      }
+    ],
+    "sampleIn": "head = [1,2,3,4,5], n = 2",
+    "sampleOut": "[1,2,3,5]"
+  },
+  {
+    "id": "prob-43",
+    "title": "Linked List Cycle Detection",
+    "fn": "hasCycle",
+    "tests": [
+      {
+        "input": "[3,2,0,-4]",
+        "expected": "false"
+      },
+      {
+        "input": "[1,2]",
+        "expected": "false"
+      },
+      {
+        "input": "[]",
+        "expected": "false"
+      }
+    ],
+    "sampleIn": "head = [3,2,0,-4]",
+    "sampleOut": "false"
+  },
+  {
+    "id": "prob-44",
+    "title": "Merge K Sorted Lists",
+    "fn": "mergeKLists",
+    "tests": [
+      {
+        "input": "[[1,4,5],[1,3,4],[2,6]]",
+        "expected": "[1,1,2,3,4,4,5,6]"
+      },
+      {
+        "input": "[]",
+        "expected": "[]"
+      },
+      {
+        "input": "[[]]",
+        "expected": "[]"
+      }
+    ],
+    "sampleIn": "lists = [[1,4,5],[1,3,4],[2,6]]",
+    "sampleOut": "[1,1,2,3,4,4,5,6]"
+  },
+  {
+    "id": "prob-45",
+    "title": "Search in Rotated Sorted Array",
+    "fn": "searchRotated",
+    "tests": [
+      {
+        "input": "[4,5,6,7,0,1,2], 0",
+        "expected": "4"
+      },
+      {
+        "input": "[4,5,6,7,0,1,2], 3",
+        "expected": "-1"
+      },
+      {
+        "input": "[1], 0",
+        "expected": "-1"
+      }
+    ],
+    "sampleIn": "nums = [4,5,6,7,0,1,2], target = 0",
+    "sampleOut": "4"
+  },
+  {
+    "id": "prob-46",
+    "title": "Find First and Last Position of Element",
+    "fn": "searchRange",
+    "tests": [
+      {
+        "input": "[5,7,7,8,8,10], 8",
+        "expected": "[3,4]"
+      },
+      {
+        "input": "[5,7,7,8,8,10], 6",
+        "expected": "[-1,-1]"
+      },
+      {
+        "input": "[], 0",
+        "expected": "[-1,-1]"
+      }
+    ],
+    "sampleIn": "nums = [5,7,7,8,8,10], target = 8",
+    "sampleOut": "[3,4]"
+  },
+  {
+    "id": "prob-47",
+    "title": "Median of Two Sorted Arrays",
+    "fn": "findMedianSortedArrays",
+    "tests": [
+      {
+        "input": "[1,3], [2]",
+        "expected": "2"
+      },
+      {
+        "input": "[1,2], [3,4]",
+        "expected": "2.5"
+      },
+      {
+        "input": "[0,0], [0,0]",
+        "expected": "0"
+      }
+    ],
+    "sampleIn": "nums1 = [1,3], nums2 = [2]",
+    "sampleOut": "2"
+  },
+  {
+    "id": "prob-48",
+    "title": "Generate Parentheses Combinations",
+    "fn": "generateParenthesis",
+    "tests": [
+      {
+        "input": "3",
+        "expected": "[\"((()))\",\"(()())\",\"(())()\",\"()(())\",\"()()()\"]"
+      },
+      {
+        "input": "1",
+        "expected": "[\"()\"]"
+      },
+      {
+        "input": "2",
+        "expected": "[\"(())\",\"()()\"]"
+      }
+    ],
+    "sampleIn": "n = 3",
+    "sampleOut": "[\"((()))\",\"(()())\",\"(())()\",\"()(())\",\"()()()\"]"
+  },
+  {
+    "id": "prob-49",
+    "title": "Subsets Power Set Generation",
+    "fn": "subsets",
+    "tests": [
+      {
+        "input": "[1,2,3]",
+        "expected": "[[],[1],[1,2],[1,2,3],[1,3],[2],[2,3],[3]]"
+      },
+      {
+        "input": "[0]",
+        "expected": "[[],[0]]"
+      }
+    ],
+    "sampleIn": "nums = [1,2,3]",
+    "sampleOut": "[[],[1],[1,2],[1,2,3],[1,3],[2],[2,3],[3]]"
+  },
+  {
+    "id": "prob-50",
+    "title": "N-Queens Board Solver",
+    "fn": "solveNQueens",
+    "tests": [
+      {
+        "input": "4",
+        "expected": "2"
+      },
+      {
+        "input": "1",
+        "expected": "1"
+      },
+      {
+        "input": "5",
+        "expected": "10"
+      }
+    ],
+    "sampleIn": "n = 4",
+    "sampleOut": "2"
+  },
+  {
+    "id": "prob-51",
+    "title": "Maximum Depth of Binary Tree",
+    "fn": "maxDepth",
+    "tests": [
+      {
+        "input": "[3,9,20,null,null,15,7]",
+        "expected": "3"
+      },
+      {
+        "input": "[1,null,2]",
+        "expected": "2"
+      },
+      {
+        "input": "[]",
+        "expected": "0"
+      }
+    ],
+    "sampleIn": "root = [3,9,20,null,null,15,7]",
+    "sampleOut": "3"
+  },
+  {
+    "id": "prob-52",
+    "title": "Invert Binary Tree",
+    "fn": "invertTree",
+    "tests": [
+      {
+        "input": "[4,2,7,1,3,6,9]",
+        "expected": "[4,7,2,9,6,3,1]"
+      },
+      {
+        "input": "[2,1,3]",
+        "expected": "[2,3,1]"
+      },
+      {
+        "input": "[]",
+        "expected": "[]"
+      }
+    ],
+    "sampleIn": "root = [4,2,7,1,3,6,9]",
+    "sampleOut": "[4,7,2,9,6,3,1]"
+  },
+  {
+    "id": "prob-53",
+    "title": "Validate Binary Search Tree",
+    "fn": "isValidBST",
+    "tests": [
+      {
+        "input": "[2,1,3]",
+        "expected": "true"
+      },
+      {
+        "input": "[5,1,4,null,null,3,6]",
+        "expected": "false"
+      },
+      {
+        "input": "[10]",
+        "expected": "true"
+      }
+    ],
+    "sampleIn": "root = [2,1,3]",
+    "sampleOut": "true"
+  },
+  {
+    "id": "prob-54",
+    "title": "Lowest Common Ancestor in BST",
+    "fn": "lowestCommonAncestor",
+    "tests": [
+      {
+        "input": "[6,2,8,0,4,7,9,null,null,3,5], 2, 8",
+        "expected": "6"
+      },
+      {
+        "input": "[6,2,8,0,4,7,9,null,null,3,5], 2, 4",
+        "expected": "2"
+      },
+      {
+        "input": "[2,1], 2, 1",
+        "expected": "2"
+      }
+    ],
+    "sampleIn": "root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8",
+    "sampleOut": "6"
+  },
+  {
+    "id": "prob-55",
+    "title": "Number of Connected Islands",
+    "fn": "numIslands",
+    "tests": [
+      {
+        "input": "[[\"1\",\"1\",\"1\",\"1\",\"0\"],[\"1\",\"1\",\"0\",\"1\",\"0\"],[\"1\",\"1\",\"0\",\"0\",\"0\"],[\"0\",\"0\",\"0\",\"0\",\"0\"]]",
+        "expected": "1"
+      },
+      {
+        "input": "[[\"1\",\"1\",\"0\",\"0\",\"0\"],[\"1\",\"1\",\"0\",\"0\",\"0\"],[\"0\",\"0\",\"1\",\"0\",\"0\"],[\"0\",\"0\",\"0\",\"1\",\"1\"]]",
+        "expected": "3"
+      }
+    ],
+    "sampleIn": "grid = [[\"1\",\"1\",\"1\",\"1\",\"0\"],[\"1\",\"1\",\"0\",\"1\",\"0\"],[\"1\",\"1\",\"0\",\"0\",\"0\"],[\"0\",\"0\",\"0\",\"0\",\"0\"]]",
+    "sampleOut": "1"
+  },
+  {
+    "id": "prob-56",
+    "title": "Course Schedule Dependency Cycle",
+    "fn": "canFinish",
+    "tests": [
+      {
+        "input": "2, [[1,0]]",
+        "expected": "true"
+      },
+      {
+        "input": "2, [[1,0],[0,1]]",
+        "expected": "false"
+      },
+      {
+        "input": "1, []",
+        "expected": "true"
+      }
+    ],
+    "sampleIn": "numCourses = 2, prerequisites = [[1,0]]",
+    "sampleOut": "true"
+  },
+  {
+    "id": "prob-57",
+    "title": "Jump Game Reachability",
+    "fn": "canJump",
+    "tests": [
+      {
+        "input": "[2,3,1,1,4]",
+        "expected": "true"
+      },
+      {
+        "input": "[3,2,1,0,4]",
+        "expected": "false"
+      },
+      {
+        "input": "[0]",
+        "expected": "true"
+      },
+      {
+        "input": "[2,0,0]",
+        "expected": "true"
+      }
+    ],
+    "sampleIn": "nums = [2,3,1,1,4]",
+    "sampleOut": "true"
+  },
+  {
+    "id": "prob-58",
+    "title": "Climbing Stairs Ways",
+    "fn": "climbStairs",
+    "tests": [
+      {
+        "input": "2",
+        "expected": "2"
+      },
+      {
+        "input": "3",
+        "expected": "3"
+      },
+      {
+        "input": "4",
+        "expected": "5"
+      },
+      {
+        "input": "5",
+        "expected": "8"
+      }
+    ],
+    "sampleIn": "n = 3",
+    "sampleOut": "3"
+  },
+  {
+    "id": "prob-59",
+    "title": "Coin Change Minimum Coins",
+    "fn": "coinChange",
+    "tests": [
+      {
+        "input": "[1,2,5], 11",
+        "expected": "3"
+      },
+      {
+        "input": "[2], 3",
+        "expected": "-1"
+      },
+      {
+        "input": "[1], 0",
+        "expected": "0"
+      }
+    ],
+    "sampleIn": "coins = [1,2,5], amount = 11",
+    "sampleOut": "3"
+  }
+]

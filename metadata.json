@@ -1,0 +1,6 @@
+{
+  "name": "Mentor.AI",
+  "description": "A complete, modern, responsive AI Coding Mentor with high-quality chat, code execution, simulated practice problems, interactive roadmap, progress tracking, mock interviews, and live code reviews.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
