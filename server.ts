@@ -10,7 +10,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 app.use(express.json());
 
@@ -1843,9 +1843,7 @@ async function startServer() {
   });
 }
 
-if (!process.env.VERCEL) {
-  startServer();
-}
+startServer();
 
 export { app };
 export default app;
