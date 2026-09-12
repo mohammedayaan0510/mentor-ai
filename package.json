@@ -6,9 +6,7 @@
   "scripts": {
     "dev": "tsx server.ts",
     "build": "vite build",
-    "start": "node dist/server.cjs",
-    "clean": "rm -rf dist server.js",
-    "lint": "tsc --noEmit"
+    "start": "node server.ts"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
