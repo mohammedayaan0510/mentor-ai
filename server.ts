@@ -1820,8 +1820,12 @@ app.post('/api/execute/testcases', async (req, res) => {
 });
 
 // Configure Vite integration
+// Replace lines starting at "async function startServer()" with this:
+
 async function startServer() {
   if (process.env.NODE_ENV !== 'production') {
+    // Dynamic import prevents Vite from loading during production serverless runs
+    const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
       server: { 
         middlewareMode: true,
@@ -1830,6 +1834,10 @@ async function startServer() {
       appType: 'spa',
     });
     app.use(vite.middlewares);
+
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`AI Coding Mentor Server active at http://localhost:${PORT}`);
+    });
   } else {
     const distPath = path.join(process.cwd(), 'dist');
     app.use(express.static(distPath));
@@ -1837,13 +1845,12 @@ async function startServer() {
       res.sendFile(path.join(distPath, 'index.html'));
     });
   }
-
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`AI Coding Mentor Server active at http://localhost:${PORT}`);
-  });
 }
 
-startServer();
+// Only launch standalone listener in dev
+if (process.env.NODE_ENV !== 'production') {
+  startServer();
+}
 
-export { app };
+// Export app module for Vercel serverless function execution
 export default app;
