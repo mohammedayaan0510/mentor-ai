@@ -1,3 +1,5 @@
+import { OAuth2Client } from 'google-auth-library';
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 import express from 'express';
 import path from 'path';
 import { spawn, type ChildProcess } from 'child_process';
@@ -50,6 +52,38 @@ function getGemini(): GoogleGenAI | null {
   }
   return aiClient;
 }
+
+// Google OAuth Token Verification Endpoint
+app.post('/api/auth/google', async (req, res) => {
+  const { token } = req.body;
+  if (!token) {
+    return res.status(400).json({ error: 'Missing token' });
+  }
+
+  try {
+    const ticket = await googleClient.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    if (!payload) {
+      return res.status(400).json({ error: 'Invalid token payload' });
+    }
+
+    return res.json({
+      success: true,
+      user: {
+        email: payload.email,
+        name: payload.name,
+        picture: payload.picture,
+      },
+    });
+  } catch (error: any) {
+    console.error('Google verification error:', error);
+    return res.status(400).json({ error: error.message || 'Token verification failed' });
+  }
+});
 
 // Helper function to call generateContent with automatic model fallback in case of high demand (503) or unavailability
 async function generateContentWithFallback(

@@ -1,40 +1,32 @@
-import {StrictMode} from 'react';
-import {createRoot} from 'react-dom/client';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import App from './App.tsx';
 import './index.css';
 
-// Catch and prevent unhandled promise rejections from dev server websocket connections
+// Replace with your real Client ID from Google Cloud Console
+const GOOGLE_CLIENT_ID = "961768486806-g3hqirremrepr2hklkvjtbvtdp290hdb.apps.googleusercontent.com";
+
 if (typeof window !== 'undefined') {
   window.addEventListener('unhandledrejection', (event) => {
     const reason = event.reason;
-    const message = (typeof reason === 'string' 
-      ? reason 
-      : (reason?.message || String(reason || ''))).toLowerCase();
-
+    const message = typeof reason === 'string'
+      ? reason
+      : (reason?.message || String(reason || ''));
     if (
-      message.includes('websocket') ||
-      message.includes('[vite]')
+      message.includes('Websocket closed without opened') ||
+      message.includes('[vite] failed to connect') ||
+      (message.includes('Websocket') && message.includes('closed'))
     ) {
       event.preventDefault();
-      event.stopPropagation();
-    }
-  });
-
-  window.addEventListener('error', (event) => {
-    const message = (event.message || '').toLowerCase();
-    if (
-      message.includes('websocket') ||
-      message.includes('[vite]')
-    ) {
-      event.preventDefault();
-      event.stopPropagation();
     }
   });
 }
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
-  </StrictMode>,
+    <GoogleOAuthProvider clientId={961768486806-g3hqirremrepr2hklkvjtbvtdp290hdb.apps.googleusercontent.com}>
+      <App />
+    </GoogleOAuthProvider>
+  </StrictMode>
 );
-

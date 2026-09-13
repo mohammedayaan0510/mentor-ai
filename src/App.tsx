@@ -1,3 +1,4 @@
+import { GoogleLogin } from '@react-oauth/google';
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { 
   Sparkles, 
@@ -76,15 +77,15 @@ export default function App() {
     return computeCentralAnalytics(activities);
   }, [activities]);
 
-  // User Profile
+  // User Profile with dynamic fallback
   const [user, setUser] = useState<UserProfile>(() => {
     const saved = localStorage.getItem('userProfile');
     if (saved) {
       return JSON.parse(saved);
     }
     return {
-      name: 'Mohammed Ayaan',
-      email: 'mohammed.ayaan0510@gmail.com',
+      name: 'Guest Developer',
+      email: 'guest@example.com',
       avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150',
       streak: 1,
       xp: 50,
@@ -267,6 +268,18 @@ export default function App() {
   // Auth logins
   const handleLogin = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
+
+    if (emailInput.trim()) {
+      const extractedName = emailInput.split('@')[0];
+      const formattedName = extractedName.charAt(0).toUpperCase() + extractedName.slice(1);
+      
+      setUser(prev => ({
+        ...prev,
+        name: formattedName,
+        email: emailInput
+      }));
+    }
+
     setIsLoggedIn(true);
     triggerNotification('Successfully signed in. Welcome to Mentor.AI!');
   };
@@ -373,8 +386,8 @@ export default function App() {
     saveActivities([]);
 
     setUser({
-      name: 'Mohammed Ayaan',
-      email: 'mohammed.ayaan0510@gmail.com',
+      name: 'Guest Developer',
+      email: 'guest@example.com',
       avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150',
       streak: 0,
       xp: 0,
@@ -447,7 +460,7 @@ export default function App() {
     }
   };
 
-  // Problem submission failed callback (records attempt without awarding XP for accurate accuracy metrics)
+  // Problem submission failed callback
   const handleProblemSubmissionFailed = (problemId: string, problemTitle: string, difficulty: 'Easy' | 'Medium' | 'Hard', topic: string = 'Arrays') => {
     const category = TOPIC_CATEGORY_MAP[topic] || 'Data Structures & Algorithms';
 
@@ -618,13 +631,11 @@ export default function App() {
     setView('editor');
     triggerNotification('Problem template loaded into Workspace!');
 
-    // Smoothly scroll container to top immediately
     if (mainScrollRef.current) {
       mainScrollRef.current.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
     }
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
 
-    // Target the coding workspace and editor for instant smooth focus
     requestAnimationFrame(() => {
       const workspaceEl = document.getElementById('coding-workspace');
       if (workspaceEl) {
@@ -874,20 +885,44 @@ await mentor.analyzeComplexity(userCode);
               </div>
 
               <div className="space-y-3.5">
-                {/* Simulated Google SSO button */}
-                <button
-                  id="login-sso-google"
-                  onClick={() => handleLogin()}
-                  className="w-full py-3 px-4 bg-[#121214] hover:bg-zinc-800 border border-white/5 hover:border-zinc-700 text-zinc-300 hover:text-zinc-100 rounded-xl text-xs font-semibold flex items-center justify-center gap-2.5 transition-all shadow-sm group cursor-pointer"
-                >
-                  <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
-                    <path fill="#EA4335" d="M12 5.04c1.66 0 3.2.57 4.38 1.69l3.27-3.27C17.67 1.6 15.02 1 12 1 7.35 1 3.37 3.63 1.39 7.46l3.82 2.96c.9-2.7 3.42-4.38 6.79-4.38z" />
-                    <path fill="#4285F4" d="M23.49 12.27c0-.81-.07-1.59-.2-2.36H12v4.51h6.46c-.29 1.48-1.14 2.73-2.4 3.58l3.73 2.89c2.18-2.01 3.7-4.97 3.7-8.62z" />
-                    <path fill="#FBBC05" d="M5.21 10.42c-.24-.71-.38-1.47-.38-2.26s.14-1.55.38-2.26L1.39 4.94C.5 6.74 0 8.76 0 10.86s.5 4.12 1.39 5.92l3.82-2.96z" />
-                    <path fill="#34A853" d="M12 23c3.24 0 5.97-1.07 7.96-2.92l-3.73-2.89c-1.03.69-2.35 1.1-4.23 1.1-3.37 0-5.89-1.68-6.79-4.38L1.39 16.8C3.37 20.37 7.35 23 12 23z" />
-                  </svg>
-                  <span>Continue with Google</span>
-                </button>
+                {/* REAL GOOGLE OAUTH BUTTON */}
+                <div className="w-full flex justify-center">
+                  <GoogleLogin
+                    onSuccess={async (credentialResponse) => {
+                      if (!credentialResponse.credential) return;
+
+                      try {
+                        const res = await fetch('/api/auth/google', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ token: credentialResponse.credential }),
+                        });
+
+                        const data = await res.json();
+                        if (data.success) {
+                          setUser({
+                            name: data.user.name || 'User',
+                            email: data.user.email || '',
+                            avatar: data.user.picture || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&h=150',
+                            streak: 1,
+                            xp: 50,
+                            solvedCount: 0,
+                            accuracy: 100
+                          });
+                          setIsLoggedIn(true);
+                          triggerNotification(`Welcome ${data.user.name}!`);
+                        } else {
+                          triggerNotification('Google Sign-In failed on backend.', 'info');
+                        }
+                      } catch (err) {
+                        triggerNotification('Connection error during Google Sign-In.', 'info');
+                      }
+                    }}
+                    onError={() => {
+                      triggerNotification('Google Sign-In was cancelled or failed.', 'info');
+                    }}
+                  />
+                </div>
 
                 {/* Simulated Github SSO */}
                 <button
@@ -1034,7 +1069,6 @@ await mentor.analyzeComplexity(userCode);
             />
 
           </div>
-
 
         </div>
       )}
