@@ -6,6 +6,13 @@ import './index.css';
 
 // Replace with your real Client ID from Google Cloud Console
 const GOOGLE_CLIENT_ID = "961768486806-g3hqirremrepr2hklkvjtbvtdp290hdb.apps.googleusercontent.com";
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+      <App />
+    </GoogleOAuthProvider>
+  </StrictMode>
+);
 
 if (typeof window !== 'undefined') {
   window.addEventListener('unhandledrejection', (event) => {
@@ -22,11 +29,3 @@ if (typeof window !== 'undefined') {
     }
   });
 }
-
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <GoogleOAuthProvider clientId={961768486806-g3hqirremrepr2hklkvjtbvtdp290hdb.apps.googleusercontent.com}>
-      <App />
-    </GoogleOAuthProvider>
-  </StrictMode>
-);
