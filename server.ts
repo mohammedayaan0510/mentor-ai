@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import { OAuth2Client } from 'google-auth-library';
 import { GoogleGenAI } from '@google/genai';
+import { createClient } from '@supabase/supabase-js';
 
 dotenv.config();
 
@@ -11,9 +12,16 @@ const PORT = Number(process.env.PORT) || 3001;
 // Initialize Google OAuth Client
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-// Initialize Google Gemini Client from environment variables (.env secrets)
+// Initialize Google Gemini Client from environment variables
 const geminiApiKey = process.env.GEMINI_API_KEY || process.env.API_KEY || '';
 const genAI = geminiApiKey ? new GoogleGenAI({ apiKey: geminiApiKey }) : null;
+
+// Initialize Supabase Admin Client (Non-blocking fallback)
+const supabaseUrl = process.env.VITE_SUPABASE_URL || '';
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+const supabaseAdmin = (supabaseUrl && supabaseServiceKey)
+  ? createClient(supabaseUrl, supabaseServiceKey)
+  : null;
 
 // Middleware
 app.use(express.json());
@@ -41,7 +49,8 @@ app.get('/', (req: Request, res: Response) => {
       '/api/execute/cpp',
       '/api/execute/testcases',
       '/api/mentor/chat',
-      '/api/mentor/action'
+      '/api/mentor/action',
+      '/api/submissions/save'
     ]
   });
 });
@@ -83,33 +92,40 @@ app.post('/api/auth/google', async (req: Request, res: Response) => {
   }
 });
 
-// Standard Code Execution Endpoint (Piston Engine)
+// Standard Code Execution Endpoint (Piston Engine - Works for JS, C++, Python, TS)
 app.post('/api/execute', async (req: Request, res: Response) => {
   const { code, language, input } = req.body;
 
-  if (!code) {
+  if (!code || !code.trim()) {
     return res.status(400).json({ error: 'Source code is required' });
   }
 
-  const langMap: { [key: string]: { lang: string; version: string } } = {
-    JavaScript: { lang: 'javascript', version: '18.15.0' },
-    TypeScript: { lang: 'typescript', version: '5.0.3' },
-    Python: { lang: 'python', version: '3.10.0' },
-    Bash: { lang: 'bash', version: '5.2.0' },
-    Java: { lang: 'java', version: '15.0.2' },
-    'C++': { lang: 'cpp', version: '10.2.0' },
+  // Normalize language key (handles JavaScript, JS, C++, cpp, etc.)
+  const normalizedLang = String(language || 'JavaScript').toLowerCase().trim();
+
+  const langMap: { [key: string]: { lang: string; version: string; fileName: string } } = {
+    javascript: { lang: 'javascript', version: '18.15.0', fileName: 'index.js' },
+    js: { lang: 'javascript', version: '18.15.0', fileName: 'index.js' },
+    typescript: { lang: 'typescript', version: '5.0.3', fileName: 'index.ts' },
+    ts: { lang: 'typescript', version: '5.0.3', fileName: 'index.ts' },
+    python: { lang: 'python', version: '3.10.0', fileName: 'main.py' },
+    py: { lang: 'python', version: '3.10.0', fileName: 'main.py' },
+    'c++': { lang: 'cpp', version: '10.2.0', fileName: 'main.cpp' },
+    cpp: { lang: 'cpp', version: '10.2.0', fileName: 'main.cpp' },
+    java: { lang: 'java', version: '15.0.2', fileName: 'Main.java' },
+    bash: { lang: 'bash', version: '5.2.0', fileName: 'script.sh' },
   };
 
-  const selectedLang = langMap[language] || { lang: 'javascript', version: '18.15.0' };
+  const selected = langMap[normalizedLang] || { lang: 'javascript', version: '18.15.0', fileName: 'index.js' };
 
   try {
     const response = await fetch('https://emkc.org/api/v2/piston/execute', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        language: selectedLang.lang,
-        version: selectedLang.version,
-        files: [{ content: code }],
+        language: selected.lang,
+        version: selected.version,
+        files: [{ name: selected.fileName, content: code }],
         stdin: input || '',
       }),
     });
@@ -117,9 +133,10 @@ app.post('/api/execute', async (req: Request, res: Response) => {
     const data = await response.json();
 
     if (data.run) {
+      const outputText = data.run.stdout || data.run.stderr || data.run.output || 'Process finished with no output.';
       return res.json({
         success: data.run.code === 0,
-        output: data.run.stdout || data.run.stderr || data.run.output || 'Process finished with no output.',
+        output: outputText,
         stderr: data.run.stderr,
         exitCode: data.run.code,
         executionTime: `${data.run.time || 12}ms`,
@@ -133,11 +150,11 @@ app.post('/api/execute', async (req: Request, res: Response) => {
   }
 });
 
-// C++ Code Execution Endpoint
+// Dedicated C++ Execution Endpoint
 app.post('/api/execute/cpp', async (req: Request, res: Response) => {
   const { code, stdin } = req.body;
 
-  if (!code) {
+  if (!code || !code.trim()) {
     return res.status(400).json({ error: 'Source code is required' });
   }
 
@@ -197,7 +214,7 @@ app.post('/api/execute/testcases', async (req: Request, res: Response) => {
   });
 });
 
-// AI Mentor Chat Endpoint (Queries Gemini API if key exists in env)
+// AI Mentor Chat Endpoint
 app.post('/api/mentor/chat', async (req: Request, res: Response) => {
   try {
     const { messages, context } = req.body;
@@ -208,10 +225,9 @@ app.post('/api/mentor/chat', async (req: Request, res: Response) => {
 
     const lastUserMessage = messages[messages.length - 1]?.content || "";
     const problemTitle = context?.problem?.title || "Coding Challenge";
-    const language = context?.language || "C++";
+    const language = context?.language || "JavaScript";
     const userCode = context?.code || "";
 
-    // Query Gemini API if GEMINI_API_KEY is present in process.env
     if (genAI) {
       try {
         const systemPrompt = `You are AI Mentor, an expert programming coach. 
@@ -239,11 +255,10 @@ Provide a helpful, concise, educational code review. Explain logic, Big-O comple
       }
     }
 
-    // Default response when env key is not provided or API is offline
     return res.json({
       content: `I've analyzed your ${language} solution for "${problemTitle}".\n\n` +
                `• **Code Structure**: Logic is well structured.\n` +
-               `• **Check Points**: Verify array bounds and edge cases (like empty/null inputs).\n` +
+               `• **Check Points**: Verify array bounds and edge cases.\n` +
                `• **Performance**: Time and Space Complexity look optimal!`,
     });
   } catch (error: any) {
@@ -254,7 +269,7 @@ Provide a helpful, concise, educational code review. Explain logic, Big-O comple
   }
 });
 
-// AI Mentor Quick Diagnostic Actions
+// AI Mentor Diagnostic Actions
 app.post('/api/mentor/action', async (req: Request, res: Response) => {
   try {
     const { action, language } = req.body;
@@ -271,6 +286,41 @@ app.post('/api/mentor/action', async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     return res.status(500).json({ result: `Diagnostic Error: ${error.message}` });
+  }
+});
+
+// Supabase Save Submission Endpoint (Safe Fallback)
+app.post('/api/submissions/save', async (req: Request, res: Response) => {
+  const { userId, problemId, code, language, status } = req.body;
+
+  if (!supabaseAdmin) {
+    return res.json({ 
+      success: false, 
+      message: 'Supabase credentials not configured in backend .env. Skipped DB save.' 
+    });
+  }
+
+  try {
+    const { data, error } = await supabaseAdmin
+      .from('submissions')
+      .insert([
+        {
+          user_id: userId || 'anonymous',
+          problem_id: problemId,
+          code,
+          language,
+          status,
+          created_at: new Date().toISOString(),
+        },
+      ])
+      .select();
+
+    if (error) throw error;
+
+    return res.json({ success: true, submission: data[0] });
+  } catch (err: any) {
+    console.error('Supabase save error:', err.message);
+    return res.status(500).json({ error: err.message });
   }
 });
 
