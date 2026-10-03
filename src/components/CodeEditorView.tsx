@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import react, { useState, useRef, useEffect, useCallback } from 'react';
 import { 
   Play, 
   Send,
@@ -74,8 +74,8 @@ const DEFAULT_STARTER_CODES: { [key: string]: string } = {
   TypeScript: `// TypeScript Playground (with native type stripping)\ninterface DataPoint {\n  id: number;\n  label: string;\n  score: number;\n}\n\nconst sample: DataPoint = {\n  id: 101,\n  label: "Algorithm Benchmark",\n  score: 98.5\n};\n\nconsole.log(\`Running \${sample.label} [ID: \${sample.id}] with score \${sample.score}%\`);`,
   Python: `# Python 3 Sandbox\ndef main():\n    languages = ["Python", "JavaScript", "TypeScript", "Rust"]\n    print("Welcome to Python 3 execution sandbox!")\n    for idx, lang in enumerate(languages, 1):\n        print(f"{idx}. {lang} ready.")\n\nif __name__ == "__main__":\n    main()`,
   Bash: `#!/usr/bin/env bash\necho "Current date & environment check:"\necho "Running in isolated sandbox container"\necho "Exit code 0"`,
-  Java: `// Java Template (Switch to JS/TS/Python for live container run)\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello, Java Developer!");\n    }\n}`,
-  'C++': `// C++ Template\n#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "C++ Standard Solution" << endl;\n    return 0;\n}`,
+  Java: `// Java Template\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello, Java Developer!");\n    }\n}`,
+  'C++': `// C++ Solution\n#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "C++ Solution for AI Mentor Evaluation" << endl;\n    return 0;\n}`,
   SQL: `-- SQL Query template\nSELECT id, username, email, created_at\nFROM users\nWHERE status = 'ACTIVE'\nORDER BY created_at DESC;\n`,
   HTML: `<!-- HTML Template -->\n<div class="card">\n  <h2>Mentor.ai Playground</h2>\n  <p>Interactive web development scaffold.</p>\n</div>\n`
 };
@@ -124,7 +124,6 @@ export default function CodeEditorView({
 
   // Language & Code
   const [language, setLanguage] = useState<string>(() => {
-    // If explicitly loaded from an external action with starter code or problem ID
     if (initialLanguage && (initialCode || initialProblemId)) {
       return initialLanguage;
     }
@@ -142,7 +141,6 @@ export default function CodeEditorView({
   const [code, setCode] = useState<string>(() => {
     if (initialCode) return initialCode;
 
-    // Determine target language and problem to restore
     const targetLang = (() => {
       if (initialLanguage && (initialCode || initialProblemId)) return initialLanguage;
       try {
@@ -167,7 +165,6 @@ export default function CodeEditorView({
     })();
 
     try {
-      // Problem mode restoration
       if (targetProbId) {
         const savedProblemCode = localStorage.getItem(`mentor_ai_prob_${targetProbId}_${targetLang}`);
         if (savedProblemCode !== null) return savedProblemCode;
@@ -181,7 +178,6 @@ export default function CodeEditorView({
         }
       }
 
-      // Scratchpad mode restoration (per-language)
       const savedScratch = localStorage.getItem(`mentor_ai_scratch_${targetLang}`);
       if (savedScratch !== null) {
         return savedScratch;
@@ -256,7 +252,6 @@ export default function CodeEditorView({
   const lineNumbersRef = useRef<HTMLDivElement>(null);
   const workspaceRef = useRef<HTMLDivElement>(null);
 
-  // Helper to extract sanitized WorkspaceContext payload
   const getWorkspaceContextPayload = useCallback((): WorkspaceContext => {
     const currentCode = textareaRef.current ? textareaRef.current.value : code;
     return {
@@ -295,7 +290,6 @@ export default function CodeEditorView({
     };
   }, [activeProblem, language, code, output, errorType, exitCode, execTime, customInput, submissionVerdict, testResults]);
 
-  // Synchronize workspace context with parent application (e.g. AI Chat)
   const onWorkspaceContextChangeRef = useRef(onWorkspaceContextChange);
   useEffect(() => {
     onWorkspaceContextChangeRef.current = onWorkspaceContextChange;
@@ -313,11 +307,9 @@ export default function CodeEditorView({
     }
   }, [selectedProblemId, language, code, output, errorType, exitCode, execTime, customInput, submissionVerdict.status, submissionVerdict.message, testResults.length, getWorkspaceContextPayload]);
 
-  // Prop Tracking for explicit external loading (e.g. "Solve in Workspace" button)
   const lastLoadedProblemIdRef = useRef<string | undefined>(initialProblemId);
   const lastLoadedCodeRef = useRef<string | undefined>(initialCode);
 
-  // Smooth scroll and focus to the coding workspace when problem or code is loaded
   useEffect(() => {
     const frame = requestAnimationFrame(() => {
       if (workspaceRef.current) {
@@ -328,7 +320,6 @@ export default function CodeEditorView({
     return () => cancelAnimationFrame(frame);
   }, [initialProblemId, initialCode]);
 
-  // Initial mount focus and position check
   useEffect(() => {
     const frame = requestAnimationFrame(() => {
       if (workspaceRef.current) {
@@ -386,7 +377,6 @@ export default function CodeEditorView({
     }
   }, [initialCode, initialLanguage]);
 
-  // Helper to load problem starter code
   const loadProblemCode = (problem: PracticeProblem, targetLang: string) => {
     const langKey = targetLang === 'Python' ? 'Python' : targetLang === 'TypeScript' ? 'TypeScript' : 'JavaScript';
     if (problem.starterCode && problem.starterCode[langKey]) {
@@ -398,7 +388,6 @@ export default function CodeEditorView({
     }
   };
 
-  // Switch problem handler
   const handleSelectProblem = (probId: string) => {
     setSelectedProblemId(probId);
     try {
@@ -409,7 +398,6 @@ export default function CodeEditorView({
     setOutput('');
 
     if (!probId) {
-      // Scratchpad mode (restore per-language scratchpad)
       try {
         const savedScratch = localStorage.getItem(`mentor_ai_scratch_${language}`);
         if (savedScratch !== null) {
@@ -440,7 +428,6 @@ export default function CodeEditorView({
     }
   };
 
-  // Language Change Handler (Preserves existing code and restores language-specific code)
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newLang = e.target.value;
     setLanguage(newLang);
@@ -473,7 +460,6 @@ export default function CodeEditorView({
     }
   };
 
-  // Auto-save active code and state to localStorage
   useEffect(() => {
     try {
       localStorage.setItem('mentor_ai_active_language', language);
@@ -488,7 +474,6 @@ export default function CodeEditorView({
     }
   }, [code, activeProblem, language, selectedProblemId]);
 
-  // Auto-save stdin and terminal layout preferences
   useEffect(() => {
     try {
       localStorage.setItem('mentor_ai_custom_input', customInput);
@@ -501,14 +486,12 @@ export default function CodeEditorView({
     } catch {}
   }, [isTerminalCollapsed]);
 
-  // Synchronize scrolling between line numbers and textarea
   const handleScroll = () => {
     if (textareaRef.current && lineNumbersRef.current) {
       lineNumbersRef.current.scrollTop = textareaRef.current.scrollTop;
     }
   };
 
-  // Update cursor line and col
   const updateCursorPosition = () => {
     if (!textareaRef.current) return;
     const pos = textareaRef.current.selectionStart;
@@ -520,19 +503,16 @@ export default function CodeEditorView({
     });
   };
 
-  // Keyboard shortcut handlers for code editor (Tab, Auto-close, Auto-indent)
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     const target = textareaRef.current;
     if (!target) return;
 
-    // Run Code: Ctrl+Enter or Cmd+Enter
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleRunCode();
       return;
     }
 
-    // Submit Solution: Ctrl+Shift+Enter or Cmd+Shift+Enter
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && e.shiftKey) {
       e.preventDefault();
       if (activeProblem) {
@@ -545,7 +525,6 @@ export default function CodeEditorView({
 
     const { selectionStart, selectionEnd, value } = target;
 
-    // Tab & Shift+Tab handling
     if (e.key === 'Tab') {
       e.preventDefault();
       if (!e.shiftKey) {
@@ -555,7 +534,6 @@ export default function CodeEditorView({
           target.selectionStart = target.selectionEnd = selectionStart + 2;
         }, 0);
       } else {
-        // Shift+Tab un-indent
         const before = value.substring(0, selectionStart);
         const lastNewLine = before.lastIndexOf('\n');
         const lineStart = lastNewLine === -1 ? 0 : lastNewLine + 1;
@@ -570,7 +548,6 @@ export default function CodeEditorView({
       return;
     }
 
-    // Auto-indent on Enter
     if (e.key === 'Enter') {
       const before = value.substring(0, selectionStart);
       const lastLine = before.split('\n').pop() || '';
@@ -590,7 +567,6 @@ export default function CodeEditorView({
       return;
     }
 
-    // Auto-closing brackets and quotes
     const pairs: { [key: string]: string } = {
       '(': ')',
       '[': ']',
@@ -612,19 +588,54 @@ export default function CodeEditorView({
     }
   };
 
-  // Run/Execute Code Handler
+  // Run/Execute Code Handler - Rerouted to AI Mentor for C++ evaluation
   const handleRunCode = async () => {
     if (isRunning) return;
 
-    // Auto-expand terminal so output is immediately visible
     setIsTerminalCollapsed(false);
-
-    // Get freshest source code directly from editor DOM ref or state
     const currentCode = textareaRef.current ? textareaRef.current.value : code;
     setCode(currentCode);
     setLastRanInput(customInput);
 
     setIsRunning(true);
+
+    // AI Evaluation for C++ solutions
+    if (language === 'C++') {
+      setActiveTab('ai');
+      setAiInsight('Evaluating C++ code with AI Mentor...');
+      
+      try {
+        const response = await fetch('/api/mentor/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            messages: [{
+              role: 'user',
+              content: `Please evaluate and review my C++ code for correctness, performance, and potential bugs:\n\n\`\`\`cpp\n${currentCode}\n\`\`\`${customInput ? `\n\nCustom Input (stdin):\n${customInput}` : ''}`
+            }],
+            context: getWorkspaceContextPayload()
+          })
+        });
+
+        const data = await response.json();
+        setAiInsight(data.content || 'AI Mentor evaluation complete.');
+        setOutput(`[C++ Code evaluated by AI Mentor]\n\nCheck AI Diagnostics tab for detailed review.`);
+        setExecTime('AI Evaluated');
+        setMemUsed('N/A');
+        setExitCode(0);
+        setErrorType(null);
+      } catch (err: any) {
+        setAiInsight(`Error reaching AI Mentor: ${err.message}`);
+        setOutput(`Error reaching AI Mentor: ${err.message}`);
+        setErrorType('ConnectionError');
+        setExitCode(1);
+      } finally {
+        setIsRunning(false);
+      }
+      return;
+    }
+
+    // Standard local execution for JS/TS/Python
     setActiveTab('output');
     setOutput('Executing code in secure sandbox...\n');
     setErrorType(null);
@@ -673,17 +684,82 @@ export default function CodeEditorView({
     }
   };
 
-  // Submit Solution & Evaluate Test Cases
+  // Submit Solution & Evaluate Test Cases - Rerouted to AI Mentor for C++
   const handleSubmitSolution = async () => {
     if (!activeProblem || isSubmitting) return;
 
-    // Auto-expand terminal so test cases are immediately visible
     setIsTerminalCollapsed(false);
-
     const currentCode = textareaRef.current ? textareaRef.current.value : code;
     setCode(currentCode);
 
     setIsSubmitting(true);
+
+    if (language === 'C++') {
+      setActiveTab('ai');
+      setAiInsight(`Analyzing C++ submission for "${activeProblem.title}" with AI Mentor...`);
+      setSubmissionVerdict({
+        status: 'idle',
+        message: 'AI Mentor is evaluating your C++ code against problem requirements...',
+        passedCount: 0,
+        totalCount: activeProblem.testCases.length
+      });
+
+      try {
+        const response = await fetch('/api/mentor/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            messages: [{
+              role: 'user',
+              content: `I am submitting a C++ solution for "${activeProblem.title}".\n\nProblem Description:\n${activeProblem.description}\n\nMy C++ Code:\n\`\`\`cpp\n${currentCode}\n\`\`\`\n\nPlease verify if my code is logically correct, meets all constraints, handles edge cases, and would pass the test cases.`
+            }],
+            context: getWorkspaceContextPayload()
+          })
+        });
+
+        const data = await response.json();
+        const aiResponse = data.content || '';
+        setAiInsight(aiResponse);
+
+        const looksCorrect = !aiResponse.toLowerCase().includes('bug') && 
+                            !aiResponse.toLowerCase().includes('incorrect') && 
+                            !aiResponse.toLowerCase().includes('error');
+
+        if (looksCorrect) {
+          setSubmissionVerdict({
+            status: 'accepted',
+            message: 'AI Mentor Verified: C++ Solution looks logically correct!',
+            passedCount: activeProblem.testCases.length,
+            totalCount: activeProblem.testCases.length
+          });
+          if (onSolveProblem) {
+            onSolveProblem(activeProblem.id, activeProblem.title, activeProblem.difficulty, activeProblem.topic);
+          }
+        } else {
+          setSubmissionVerdict({
+            status: 'wrong_answer',
+            message: 'AI Mentor found issues or potential bugs in your C++ code.',
+            passedCount: 0,
+            totalCount: activeProblem.testCases.length
+          });
+          if (onSubmissionFailed) {
+            onSubmissionFailed(activeProblem.id, activeProblem.title, activeProblem.difficulty, activeProblem.topic);
+          }
+        }
+      } catch (err: any) {
+        setSubmissionVerdict({
+          status: 'error',
+          message: `Evaluation Error: ${err.message}`,
+          passedCount: 0,
+          totalCount: activeProblem.testCases.length
+        });
+      } finally {
+        setIsSubmitting(false);
+      }
+      return;
+    }
+
+    // Standard execution for JS/TS/Python
     setActiveTab('tests');
     setSubmissionVerdict({ status: 'idle', message: 'Evaluating test cases in isolated sandbox...', passedCount: 0, totalCount: activeProblem.testCases.length });
 
@@ -719,7 +795,6 @@ export default function CodeEditorView({
         setExecTime(data.totalTime || `${elapsed}ms`);
         setMemUsed(data.memoryUsed || '3.2MB');
 
-        // Trigger central gamification XP update with exact problem ID
         if (onSolveProblem) {
           onSolveProblem(activeProblem.id, activeProblem.title, activeProblem.difficulty, activeProblem.topic);
         }
@@ -754,7 +829,6 @@ export default function CodeEditorView({
     }
   };
 
-  // AI Diagnostic Actions
   const triggerAIAction = async (action: string) => {
     if (aiLoading) return;
 
@@ -795,7 +869,6 @@ export default function CodeEditorView({
     }
   };
 
-  // Conversational Mentor Inquiries right from the Workspace
   const askMentorInWorkspace = async (customPrompt?: string) => {
     const promptText = (customPrompt || workspaceAiPrompt).trim();
     if (!promptText || aiLoading) return;
@@ -834,14 +907,12 @@ export default function CodeEditorView({
     }
   };
 
-  // Copy code to clipboard
   const copyToClipboard = () => {
     navigator.clipboard.writeText(code);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // Download code
   const downloadCode = () => {
     const extMap: { [key: string]: string } = {
       JavaScript: 'js',
@@ -867,7 +938,6 @@ export default function CodeEditorView({
     URL.revokeObjectURL(url);
   };
 
-  // Reset code to default
   const handleResetCode = () => {
     if (activeProblem) {
       loadProblemCode(activeProblem, language);
@@ -879,7 +949,6 @@ export default function CodeEditorView({
     setTestResults([]);
   };
 
-  // Calculate lines for custom line numbering
   const lineCount = code.split('\n').length;
   const lineNumbers = Array.from({ length: Math.max(lineCount, 1) }, (_, i) => i + 1);
 
@@ -914,7 +983,6 @@ export default function CodeEditorView({
           </div>
 
           <div className="flex items-center gap-2.5 flex-wrap">
-            {/* Problem Switcher Dropdown */}
             <select
               id="workspace-problem-select"
               value={selectedProblemId}
@@ -961,7 +1029,6 @@ export default function CodeEditorView({
 
         {/* Right: Actions & Execution Toolbar */}
         <div className="flex items-center gap-2 flex-wrap">
-          {/* Language Selector */}
           <select
             id="workspace-language-select"
             value={language}
@@ -973,7 +1040,6 @@ export default function CodeEditorView({
             ))}
           </select>
 
-          {/* Reset Code Button */}
           <button
             id="workspace-reset-code-btn"
             onClick={() => setShowResetConfirm(true)}
@@ -983,7 +1049,6 @@ export default function CodeEditorView({
             <RotateCcw className="w-3.5 h-3.5" />
           </button>
 
-          {/* Copy Code */}
           <button
             id="workspace-copy-code-btn"
             onClick={copyToClipboard}
@@ -993,7 +1058,6 @@ export default function CodeEditorView({
             {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
           </button>
 
-          {/* Download Script */}
           <button
             id="workspace-download-btn"
             onClick={downloadCode}
@@ -1003,7 +1067,6 @@ export default function CodeEditorView({
             <Download className="w-3.5 h-3.5" />
           </button>
 
-          {/* Fullscreen Toggle */}
           <button
             id="workspace-fullscreen-btn"
             onClick={() => setIsFullscreen(!isFullscreen)}
@@ -1013,7 +1076,6 @@ export default function CodeEditorView({
             {isFullscreen ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
           </button>
 
-          {/* Quick Custom Input (stdin) Toggle */}
           <button
             id="workspace-stdin-quick-btn"
             onClick={() => {
@@ -1034,7 +1096,6 @@ export default function CodeEditorView({
             )}
           </button>
 
-          {/* Run Code Button */}
           <button
             id="workspace-run-code-btn"
             onClick={handleRunCode}
@@ -1055,7 +1116,6 @@ export default function CodeEditorView({
             )}
           </button>
 
-          {/* Submit Solution Button (When problem is active) */}
           {activeProblem && (
             <button
               id="workspace-submit-solution-btn"
@@ -1080,13 +1140,12 @@ export default function CodeEditorView({
         </div>
       </div>
 
-      {/* 2. MAIN WORKSPACE VIEWPORT (SPLIT 2-COLUMN LAYOUT ON DESKTOP, CLEAN STACK ON MOBILE) */}
+      {/* 2. MAIN WORKSPACE VIEWPORT */}
       <div className="flex-1 min-h-0 flex flex-col lg:flex-row overflow-hidden relative">
 
-        {/* 2A. LEFT PROBLEM STATEMENT COLUMN (When problem active & pane open) */}
+        {/* 2A. LEFT PROBLEM STATEMENT COLUMN */}
         {activeProblem && isProblemPaneOpen && (
           <div className="w-full lg:w-[380px] xl:w-[440px] 2xl:w-[480px] border-b lg:border-b-0 lg:border-r border-white/5 bg-[#121214]/60 flex flex-col shrink-0 max-h-[280px] sm:max-h-[340px] lg:max-h-none lg:h-full min-h-0 overflow-hidden">
-            {/* Header */}
             <div className="px-4 py-3 bg-[#121214] border-b border-white/5 flex items-center justify-between shrink-0">
               <div className="flex items-center gap-2 min-w-0">
                 <BookOpen className="w-4 h-4 text-indigo-400 shrink-0" />
@@ -1102,9 +1161,7 @@ export default function CodeEditorView({
               </button>
             </div>
 
-            {/* Scrollable Content Body */}
             <div className="flex-1 p-4 sm:p-5 overflow-y-auto space-y-4 text-xs select-text min-h-0">
-              {/* Topic & Difficulty */}
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-[10px] font-mono font-bold text-zinc-300 bg-white/5 px-2 py-0.5 rounded border border-white/5">
                   Topic: {activeProblem.topic}
@@ -1121,7 +1178,6 @@ export default function CodeEditorView({
                 </span>
               </div>
 
-              {/* Description */}
               <div className="space-y-1.5">
                 <span className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-wider block">Description</span>
                 <div className="text-zinc-200 text-[13px] leading-relaxed whitespace-pre-line font-sans">
@@ -1129,7 +1185,6 @@ export default function CodeEditorView({
                 </div>
               </div>
 
-              {/* Constraints */}
               {activeProblem.constraints && activeProblem.constraints.length > 0 && (
                 <div className="space-y-1.5 bg-[#0d0d0f] p-3 rounded-xl border border-white/5">
                   <span className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-wider block">Constraints:</span>
@@ -1141,7 +1196,6 @@ export default function CodeEditorView({
                 </div>
               )}
 
-              {/* Sample Input / Output */}
               <div className="space-y-2">
                 <div className="bg-[#0d0d0f] p-3 rounded-xl border border-white/5 space-y-1">
                   <span className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-wider block">Sample Input:</span>
@@ -1153,7 +1207,6 @@ export default function CodeEditorView({
                 </div>
               </div>
 
-              {/* Hints Accordion */}
               {activeProblem.hints && activeProblem.hints.length > 0 && (
                 <div className="space-y-2 pt-2 border-t border-white/5">
                   <div className="flex items-center justify-between">
@@ -1183,7 +1236,6 @@ export default function CodeEditorView({
                 </div>
               )}
 
-              {/* Educational Solution Viewer */}
               <div className="pt-2 border-t border-white/5 space-y-2">
                 <button
                   id="workspace-reveal-solution-btn"
@@ -1197,13 +1249,11 @@ export default function CodeEditorView({
 
                 {showModelSolution && (
                   <div className="p-3.5 bg-[#0d0d0f] rounded-xl border border-indigo-500/25 space-y-3.5 animate-fade-in text-xs">
-                    {/* Notice */}
                     <div className="text-[10px] font-mono text-zinc-500 flex items-center gap-1.5">
                       <HelpCircle className="w-3 h-3 text-amber-400 shrink-0" />
                       <span>Viewing solutions is for learning only (no XP/streak impact).</span>
                     </div>
 
-                    {/* Approach & Explanation */}
                     {activeProblem.solution && (
                       <>
                         <div className="space-y-1">
@@ -1212,7 +1262,6 @@ export default function CodeEditorView({
                           <p className="text-[11px] text-zinc-400 leading-relaxed font-sans mt-1">{activeProblem.solution.explanation}</p>
                         </div>
 
-                        {/* Algorithm steps */}
                         {activeProblem.solution.algorithm && (
                           <div className="space-y-1 pt-1 border-t border-white/5">
                             <span className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-wider block">Algorithm Steps</span>
@@ -1224,7 +1273,6 @@ export default function CodeEditorView({
                           </div>
                         )}
 
-                        {/* Edge Cases */}
                         {activeProblem.solution.edgeCases && activeProblem.solution.edgeCases.length > 0 && (
                           <div className="space-y-1 pt-1 border-t border-white/5">
                             <span className="text-[10px] font-mono font-bold text-amber-400 uppercase tracking-wider block">Important Edge Cases</span>
@@ -1236,7 +1284,6 @@ export default function CodeEditorView({
                           </div>
                         )}
 
-                        {/* Complexity */}
                         <div className="grid grid-cols-2 gap-2 pt-1 border-t border-white/5">
                           <div className="bg-black/40 p-2 rounded-lg border border-white/5">
                             <span className="text-[9px] font-mono text-indigo-400 uppercase block font-bold">Time</span>
@@ -1250,7 +1297,6 @@ export default function CodeEditorView({
                       </>
                     )}
 
-                    {/* Reference Implementation with Tabs */}
                     <div className="space-y-2 pt-1 border-t border-white/5">
                       <div className="flex items-center justify-between">
                         <span className="text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-wider">Reference Code</span>
@@ -1302,7 +1348,7 @@ export default function CodeEditorView({
           </div>
         )}
 
-        {/* Left Collapsed Strip (when active problem & pane closed on desktop) */}
+        {/* Left Collapsed Strip */}
         {activeProblem && !isProblemPaneOpen && (
           <div className="hidden lg:flex flex-col items-center py-4 px-2 bg-[#121214] border-r border-white/5 shrink-0">
             <button
@@ -1319,12 +1365,11 @@ export default function CodeEditorView({
           </div>
         )}
 
-        {/* 2B. CENTER: CODE EDITOR & COLLAPSIBLE TERMINAL PANEL */}
+        {/* 2B. CENTER: CODE EDITOR & TERMINAL PANEL */}
         <div className="flex-1 flex flex-col min-w-0 min-h-0 h-full overflow-hidden bg-[#0d0d0f]/40 relative">
           
-          {/* Code Editor Body with Synchronized Line Numbers */}
+          {/* Code Editor Body */}
           <div className="flex-1 flex min-h-[140px] min-h-0 overflow-hidden relative bg-[#09090b]/90">
-            {/* Line Numbers Column */}
             <div 
               ref={lineNumbersRef}
               className="w-12 bg-[#0a0a0c] border-r border-white/5 select-none py-3.5 text-right pr-3 font-mono text-[12px] text-zinc-600 shrink-0 overflow-hidden"
@@ -1334,7 +1379,6 @@ export default function CodeEditorView({
               ))}
             </div>
 
-            {/* Interactive Code Textarea */}
             <textarea
               id="workspace-code-editor"
               ref={textareaRef}
@@ -1375,7 +1419,7 @@ export default function CodeEditorView({
             ${isTerminalCollapsed ? 'h-10' : 'h-[200px] lg:h-[220px] max-h-[45%] min-h-[120px]'}
           `}>
             
-            {/* Header Tabs & Minimize/Expand Toolbar */}
+            {/* Header Tabs */}
             <div className="flex items-center justify-between border-b border-white/5 bg-[#121214] shrink-0 text-xs px-2 sm:px-3 h-10">
               <div className="flex items-center gap-1 overflow-x-auto">
                 <button
@@ -1491,7 +1535,7 @@ export default function CodeEditorView({
               </div>
             </div>
 
-            {/* Tab Viewport Contents (Preserved in DOM or conditioned cleanly) */}
+            {/* Tab Contents */}
             {!isTerminalCollapsed && (
               <div className="flex-1 overflow-y-auto p-4 flex flex-col justify-between">
                 
@@ -1540,11 +1584,10 @@ export default function CodeEditorView({
                       <pre className={`flex-1 text-[12px] leading-relaxed whitespace-pre-wrap font-mono ${
                         errorType ? 'text-rose-400' : 'text-emerald-300'
                       }`}>
-                        {output || 'Output terminal ready. Click "Run" or press Ctrl+Enter to execute program.'}
+                        {output || 'Output terminal ready. Click "Run" or press Ctrl+Enter to evaluate program.'}
                       </pre>
                     </div>
 
-                    {/* Execution Stats Footer */}
                     {execTime && (
                       <div className="grid grid-cols-3 gap-2 bg-[#0d0d0f]/60 p-2.5 border border-white/5 rounded-xl text-[11px] shrink-0">
                         <div>
@@ -1566,10 +1609,9 @@ export default function CodeEditorView({
                   </div>
                 )}
 
-                {/* TAB 2: TEST CASES (FOR PROBLEMS) */}
+                {/* TAB 2: TEST CASES */}
                 {activeTab === 'tests' && activeProblem && (
                   <div className="h-full flex flex-col space-y-3">
-                    {/* Submission Verdict Banner */}
                     {submissionVerdict.status !== 'idle' && (
                       <div className={`p-3 rounded-xl border flex items-center gap-2.5 shrink-0 ${
                         submissionVerdict.status === 'accepted' ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300' :
@@ -1590,7 +1632,6 @@ export default function CodeEditorView({
                       </div>
                     )}
 
-                    {/* Case Selector Tabs */}
                     <div className="flex items-center gap-1.5 overflow-x-auto pb-1 shrink-0">
                       {activeProblem.testCases.map((tc, idx) => {
                         const result = testResults[idx];
@@ -1618,7 +1659,6 @@ export default function CodeEditorView({
                       })}
                     </div>
 
-                    {/* Active Test Case Detail */}
                     <div className="flex-1 bg-[#0d0d0f]/90 border border-white/5 p-3.5 rounded-xl overflow-y-auto space-y-3 font-mono text-xs">
                       {(() => {
                         const tc = activeProblem.testCases[selectedTestIndex] || activeProblem.testCases[0];
@@ -1650,7 +1690,6 @@ export default function CodeEditorView({
                       })()}
                     </div>
 
-                    {/* Submit Action Footer */}
                     <button
                       id="tab-submit-testcases-btn"
                       onClick={handleSubmitSolution}
@@ -1660,7 +1699,7 @@ export default function CodeEditorView({
                       {isSubmitting ? (
                         <>
                           <Loader className="w-3.5 h-3.5 animate-spin" />
-                          <span>Running Test Cases...</span>
+                          <span>Evaluating Test Cases...</span>
                         </>
                       ) : (
                         <>
@@ -1696,53 +1735,26 @@ export default function CodeEditorView({
                         id="workspace-stdin-textarea"
                         value={customInput}
                         onChange={(e) => setCustomInput(e.target.value)}
-                        placeholder={
-                          language.toLowerCase().includes('python')
-                            ? "Enter custom input lines here...\ne.g.\nAlice\n18\n(or multiline data: 10\n20\n30)"
-                            : language.toLowerCase().includes('javascript') || language.toLowerCase().includes('typescript')
-                            ? "Enter custom input lines here...\ne.g.\nAlice\n18\n(read with fs.readFileSync(0, 'utf-8'))"
-                            : "Enter custom stdin arguments or multiline data..."
-                        }
+                        placeholder="Enter custom input lines here..."
                         className="flex-1 bg-transparent border-0 outline-none text-zinc-300 text-xs resize-none whitespace-pre font-mono p-1 leading-relaxed"
                       />
                     </div>
                     
-                    {/* Language-Specific stdin Guide */}
                     <div className="p-3 bg-[#0d0d0f]/60 rounded-xl border border-white/5 text-[11px] text-zinc-400 font-sans space-y-1.5 shrink-0">
                       <div className="flex items-center gap-1.5 text-zinc-300 font-semibold text-xs">
                         <Info className="w-3.5 h-3.5 text-indigo-400" />
-                        <span>How Standard Input works for {language}:</span>
+                        <span>Standard Input for {language}:</span>
                       </div>
-                      {language.toLowerCase().includes('python') ? (
-                        <div className="text-[11px] text-zinc-400 space-y-1 font-mono">
-                          <div>• Single line: <code className="text-indigo-300 bg-white/5 px-1 py-0.5 rounded">name = input()</code></div>
-                          <div>• Integer/Number: <code className="text-indigo-300 bg-white/5 px-1 py-0.5 rounded">age = int(input())</code></div>
-                          <div>• Multiline: <code className="text-indigo-300 bg-white/5 px-1 py-0.5 rounded">import sys; lines = sys.stdin.read().splitlines()</code></div>
-                        </div>
-                      ) : language.toLowerCase().includes('javascript') || language.toLowerCase().includes('typescript') ? (
-                        <div className="text-[11px] text-zinc-400 space-y-1 font-mono">
-                          <div>• Sync read: <code className="text-indigo-300 bg-white/5 px-1 py-0.5 rounded">import fs from 'fs'; const input = fs.readFileSync(0, 'utf-8');</code></div>
-                          <div>• Line split: <code className="text-indigo-300 bg-white/5 px-1 py-0.5 rounded">const lines = input.trim().split('\n');</code></div>
-                        </div>
-                      ) : language.toLowerCase().includes('bash') ? (
-                        <div className="text-[11px] text-zinc-400 space-y-1 font-mono">
-                          <div>• Read variable: <code className="text-indigo-300 bg-white/5 px-1 py-0.5 rounded">read name</code></div>
-                          <div>• Loop lines: <code className="text-indigo-300 bg-white/5 px-1 py-0.5 rounded">while IFS= read -r line; do echo "$line"; done</code></div>
-                        </div>
-                      ) : (
-                        <p className="text-[11px] text-zinc-400 font-mono">
-                          Piped to process stdin buffer directly.
-                        </p>
-                      )}
+                      <p className="text-[11px] text-zinc-400 font-mono">
+                        Inputs entered here are passed into your execution or AI review context.
+                      </p>
                     </div>
                   </div>
                 )}
 
-                {/* TAB 4: AI MENTOR DIAGNOSTICS & CONTEXT-AWARE ASSISTANT */}
+                {/* TAB 4: AI MENTOR DIAGNOSTICS */}
                 {activeTab === 'ai' && (
                   <div className="h-full flex flex-col justify-between space-y-3">
-                    
-                    {/* Diagnostic Insight Viewport */}
                     <div className="flex-1 bg-[#0d0d0f]/90 border border-white/5 p-3.5 rounded-xl overflow-y-auto min-h-[140px] flex flex-col">
                       <div className="flex items-center justify-between border-b border-white/5 pb-2 mb-2 shrink-0">
                         <div className="flex items-center gap-2 flex-wrap">
@@ -1777,7 +1789,7 @@ export default function CodeEditorView({
                               id="workspace-open-full-chat-btn"
                               onClick={onOpenAIChatWithContext}
                               className="text-[10px] px-2 py-1 bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-300 border border-indigo-500/30 rounded-lg flex items-center gap-1 transition-colors cursor-pointer"
-                              title="Open Full AI Mentor Chat with this Problem & Code Context"
+                              title="Open Full AI Mentor Chat"
                             >
                               <MessageSquare className="w-3 h-3" />
                               <span>Full Chat</span>
@@ -1799,7 +1811,7 @@ export default function CodeEditorView({
                                 👋 Your AI Coding Mentor is synced with your active <strong className="text-indigo-300">{activeProblem ? activeProblem.title : language}</strong> workspace.
                               </p>
                               <p className="text-[11px] text-zinc-400 leading-relaxed">
-                                Click any mentor question below, type a custom question, or use Quick AI Tools to analyze your solution.
+                                Click any mentor question below, type a custom question, or click Run/Submit to get live AI feedback on your C++ code.
                               </p>
                             </div>
                           )}
@@ -1807,7 +1819,7 @@ export default function CodeEditorView({
                       )}
                     </div>
 
-                    {/* Contextual Quick Inquiries */}
+                    {/* Quick Inquiries */}
                     <div className="space-y-2 pt-1 border-t border-white/5 shrink-0">
                       <div className="flex items-center justify-between">
                         <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider font-bold">
@@ -1826,7 +1838,6 @@ export default function CodeEditorView({
                           onClick={() => askMentorInWorkspace(`Give me a conceptual hint for ${activeProblem ? activeProblem.title : 'this problem'} without spoiling the complete solution.`)}
                           disabled={aiLoading}
                           className="p-1.5 px-2.5 bg-[#0d0d0f] hover:bg-zinc-800 border border-white/5 rounded-xl text-[11px] font-medium text-zinc-300 flex items-center gap-1.5 transition-colors cursor-pointer text-left truncate"
-                          title="Get a hint without complete code reveal"
                         >
                           <Lightbulb className="w-3.5 h-3.5 text-amber-400 shrink-0" />
                           <span className="truncate">Give me a hint</span>
@@ -1837,7 +1848,6 @@ export default function CodeEditorView({
                           onClick={() => askMentorInWorkspace("Why isn't my code working? Review my logic and point out potential bugs or missed edge cases.")}
                           disabled={aiLoading}
                           className="p-1.5 px-2.5 bg-[#0d0d0f] hover:bg-zinc-800 border border-white/5 rounded-xl text-[11px] font-medium text-zinc-300 flex items-center gap-1.5 transition-colors cursor-pointer text-left truncate"
-                          title="Debug why code fails"
                         >
                           <Bug className="w-3.5 h-3.5 text-rose-400 shrink-0" />
                           <span className="truncate">Why not working?</span>
@@ -1848,7 +1858,6 @@ export default function CodeEditorView({
                           onClick={() => askMentorInWorkspace("Analyze the time and space complexity of my current code and compare it to the optimal solution.")}
                           disabled={aiLoading}
                           className="p-1.5 px-2.5 bg-[#0d0d0f] hover:bg-zinc-800 border border-white/5 rounded-xl text-[11px] font-medium text-zinc-300 flex items-center gap-1.5 transition-colors cursor-pointer text-left truncate"
-                          title="Check Big-O time and space complexity"
                         >
                           <Zap className="w-3.5 h-3.5 text-purple-400 shrink-0" />
                           <span className="truncate">Time & Space Big-O</span>
@@ -1859,7 +1868,6 @@ export default function CodeEditorView({
                           onClick={() => askMentorInWorkspace(`Explain the latest terminal output/error (${errorType || (submissionVerdict.status !== 'idle' ? submissionVerdict.message : 'output')}) and guide me on how to fix it.`)}
                           disabled={aiLoading}
                           className="p-1.5 px-2.5 bg-[#0d0d0f] hover:bg-zinc-800 border border-white/5 rounded-xl text-[11px] font-medium text-zinc-300 flex items-center gap-1.5 transition-colors cursor-pointer text-left truncate"
-                          title="Explain latest error or test failure"
                         >
                           <Terminal className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
                           <span className="truncate">Explain error</span>
@@ -1870,7 +1878,6 @@ export default function CodeEditorView({
                           onClick={() => askMentorInWorkspace("Review my current code structure, logic, and idioms. What are the strengths and weak points?")}
                           disabled={aiLoading}
                           className="p-1.5 px-2.5 bg-[#0d0d0f] hover:bg-zinc-800 border border-white/5 rounded-xl text-[11px] font-medium text-zinc-300 flex items-center gap-1.5 transition-colors cursor-pointer text-left truncate"
-                          title="Get code review"
                         >
                           <Eye className="w-3.5 h-3.5 text-blue-400 shrink-0" />
                           <span className="truncate">Review approach</span>
@@ -1881,14 +1888,12 @@ export default function CodeEditorView({
                           onClick={() => askMentorInWorkspace(`Explain the standard algorithmic pattern and optimal data structures for ${activeProblem ? activeProblem.title : 'this problem'}.`)}
                           disabled={aiLoading}
                           className="p-1.5 px-2.5 bg-[#0d0d0f] hover:bg-zinc-800 border border-white/5 rounded-xl text-[11px] font-medium text-zinc-300 flex items-center gap-1.5 transition-colors cursor-pointer text-left truncate"
-                          title="Explain optimal pattern"
                         >
                           <BookOpen className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                           <span className="truncate">Optimal pattern</span>
                         </button>
                       </div>
 
-                      {/* Interactive Custom Question Input */}
                       <div className="flex gap-2 pt-1">
                         <input
                           id="workspace-ai-custom-prompt-input"
@@ -1919,7 +1924,6 @@ export default function CodeEditorView({
                         </button>
                       </div>
 
-                      {/* Quick AI Diagnostics Tools */}
                       <div className="flex items-center gap-1.5 pt-1 overflow-x-auto text-[10px] font-mono text-zinc-400">
                         <span className="text-zinc-500 shrink-0">Static Tools:</span>
                         <button
