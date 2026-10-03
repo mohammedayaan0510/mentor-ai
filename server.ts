@@ -92,7 +92,7 @@ app.post('/api/auth/google', async (req: Request, res: Response) => {
   }
 });
 
-// Standard Code Execution Endpoint (Piston Engine - Works for JS, C++, Python, TS)
+// Standard Code Execution Endpoint (Safe Piston Engine Proxy)
 app.post('/api/execute', async (req: Request, res: Response) => {
   const { code, language, input } = req.body;
 
@@ -100,7 +100,6 @@ app.post('/api/execute', async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'Source code is required' });
   }
 
-  // Normalize language key (handles JavaScript, JS, C++, cpp, etc.)
   const normalizedLang = String(language || 'JavaScript').toLowerCase().trim();
 
   const langMap: { [key: string]: { lang: string; version: string; fileName: string } } = {
@@ -130,7 +129,27 @@ app.post('/api/execute', async (req: Request, res: Response) => {
       }),
     });
 
-    const data = await response.json();
+    // Extract raw text first to avoid crashing on HTML error responses
+    const rawText = await response.text();
+
+    if (!response.ok) {
+      console.error('Piston API HTTP Error:', response.status, rawText);
+      return res.status(502).json({
+        success: false,
+        output: `Execution Server Error (${response.status}): The sandbox service is temporarily busy or unreachable. Please try again.`,
+      });
+    }
+
+    let data;
+    try {
+      data = JSON.parse(rawText);
+    } catch (parseError) {
+      console.error('Failed to parse Piston JSON response:', rawText);
+      return res.status(502).json({
+        success: false,
+        output: 'Execution sandbox returned an unreadable response format.',
+      });
+    }
 
     if (data.run) {
       const outputText = data.run.stdout || data.run.stderr || data.run.output || 'Process finished with no output.';
@@ -146,7 +165,10 @@ app.post('/api/execute', async (req: Request, res: Response) => {
     return res.status(500).json({ error: 'Execution payload unreadable' });
   } catch (err: any) {
     console.error('Execution Error:', err);
-    return res.status(500).json({ error: 'Failed to reach execution server' });
+    return res.status(500).json({
+      success: false,
+      output: `Failed to reach execution server: ${err.message}`
+    });
   }
 });
 
@@ -170,7 +192,16 @@ app.post('/api/execute/cpp', async (req: Request, res: Response) => {
       }),
     });
 
-    const data = await response.json();
+    const rawText = await response.text();
+
+    if (!response.ok) {
+      return res.status(502).json({
+        success: false,
+        output: `C++ Execution Server Error (${response.status}). Please try again.`,
+      });
+    }
+
+    const data = JSON.parse(rawText);
 
     if (data.run) {
       return res.json({
